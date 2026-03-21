@@ -6,8 +6,8 @@
 
 - 今のタスク → `tasks/current.md`
 - `tasks/current.md` が空の場合のみ → `tasks/backlog.md` を読み、先頭の未完了グループを `current.md` に移してから作業を開始する
-- 全体仕様  → `docs/design.md`
-- 規約      → `docs/conventions.md`
+- 全体仕様 → `docs/design.md`
+- 規約 → `docs/conventions.md`
 
 ## レイヤー構成と依存ルール
 

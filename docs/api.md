@@ -3,9 +3,11 @@
 ## 食品マスタ
 
 ### GET /api/food-masters
+
 クエリパラメータ: `query` (前方一致 + 部分一致で検索)
 
 レスポンス:
+
 ```json
 [
   {
@@ -19,6 +21,7 @@
 ```
 
 ### GET /api/food-masters/:id
+
 単一食品マスタの取得。
 
 ---
@@ -26,9 +29,11 @@
 ## 在庫
 
 ### GET /api/inventory
+
 food_master単位で集約した在庫一覧。
 
 レスポンス:
+
 ```json
 [
   {
@@ -41,12 +46,15 @@ food_master単位で集約した在庫一覧。
 ```
 
 ### GET /api/inventory/lots
+
 ロット単位の一覧（アコーディオン展開用）。
 
 ### POST /api/inventory
+
 食品追加。期限未入力時はfood_mastersのdefault_expiry_daysで自動設定する。
 
 リクエスト:
+
 ```json
 {
   "food_master_id": "uuid",
@@ -57,15 +65,19 @@ food_master単位で集約した在庫一覧。
 ```
 
 ### PATCH /api/inventory/:lotId
+
 ロット更新。
 
 ### DELETE /api/inventory/:lotId
+
 ロット削除。
 
 ### POST /api/inventory/consume-from-recipe
+
 レシピ実行による在庫減算。古いロットから優先して減算する。
 
 リクエスト:
+
 ```json
 {
   "recipe_id": "uuid",
@@ -78,9 +90,11 @@ food_master単位で集約した在庫一覧。
 ## レシピ
 
 ### GET /api/recipes/recommended
+
 スコアリング上位3件を返す。直近3日の提案済みレシピは除外する。
 
 レスポンス:
+
 ```json
 [
   {
@@ -94,4 +108,5 @@ food_master単位で集約した在庫一覧。
 ```
 
 ### GET /api/recipes/:id
+
 レシピ詳細 + recipe_ingredientsを返す。
