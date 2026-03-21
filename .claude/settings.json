@@ -1,22 +1,22 @@
 {
-    "permissions": {
-      "allow": [
-        "Bash(pnpm *)",
-        "Bash(npx supabase *)",
-        "Bash(git status)",
-        "Bash(git diff *)",
-        "Bash(git add *)",
-        "Bash(git commit *)",
-        "Bash(git checkout *)",
-        "Bash(git pull)",
-        "Bash(git push origin *)",
-        "Bash(gh pr create *)"
-      ],
-      "deny": [
-        "Bash(rm -rf *)",
-        "Bash(git push --force *)",
-        "Bash(git reset --hard *)",
-        "Bash(npx supabase db reset *)"
-      ]
-    }
+  "permissions": {
+    "allow": [
+      "Bash(pnpm *)",
+      "Bash(npx supabase *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git pull)",
+      "Bash(git push origin *)",
+      "Bash(gh pr create *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)",
+      "Bash(npx supabase db reset *)"
+    ]
   }
+}
