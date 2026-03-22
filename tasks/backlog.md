@@ -116,9 +116,9 @@
 
 #### タスク
 
-- [ ] GET /api/recipes/recommended
-- [ ] GET /api/recipes/:id
-- [ ] レシピseedデータ（30〜50件）
+- [x] GET /api/recipes/recommended
+- [x] GET /api/recipes/:id
+- [x] レシピseedデータ（30〜50件）
 
 ---
 

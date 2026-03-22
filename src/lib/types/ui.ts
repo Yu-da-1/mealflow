@@ -16,6 +16,10 @@ export type RecipeWithIngredients = RecipeRow & {
   ingredients: RecipeIngredientRow[];
 };
 
-export type RecommendedRecipe = RecipeWithIngredients & {
-  score: number;
+export type RecommendedRecipeResponse = {
+  id: string;
+  title: string;
+  description: string | null;
+  cooking_time_minutes: number | null;
+  reason: string;
 };

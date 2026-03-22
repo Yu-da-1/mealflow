@@ -3,6 +3,26 @@ import { supabase } from "@/server/supabase";
 import type { RecipeIngredientRow, RecipeRow } from "@/lib/types/database";
 import type { RecipeWithIngredients } from "@/lib/types/ui";
 
+export const getRecipeById = async (id: string): Promise<RecipeWithIngredients | null> => {
+  const { data: recipe, error: recipeError } = await supabase
+    .from("recipes")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (recipeError) throw recipeError;
+  if (!recipe) return null;
+
+  const { data: ingredients, error: ingredientsError } = await supabase
+    .from("recipe_ingredients")
+    .select("*")
+    .eq("recipe_id", id);
+
+  if (ingredientsError) throw ingredientsError;
+
+  return { ...(recipe as RecipeRow), ingredients: ingredients as RecipeIngredientRow[] };
+};
+
 export const getActiveRecipesWithIngredients = async (): Promise<RecipeWithIngredients[]> => {
   const { data: recipes, error: recipesError } = await supabase
     .from("recipes")
