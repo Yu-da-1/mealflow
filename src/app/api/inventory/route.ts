@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { buildInventorySummary } from "@/domain/inventory/buildInventorySummary";
+import { applyExpiryRule } from "@/domain/inventory/expiryRules";
 import { validateCreateInventoryLotInput } from "@/domain/inventory/validateCreateInventoryLotInput";
-import { getFoodMastersByIds } from "@/server/repositories/foodMasterRepository";
+import { getFoodMasterById, getFoodMastersByIds } from "@/server/repositories/foodMasterRepository";
 import {
   createInventoryLot,
   getActiveInventoryLots,
@@ -35,7 +36,23 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
   }
 
   try {
-    const lot = await createInventoryLot(validation.input);
+    const foodMaster = await getFoodMasterById(validation.input.food_master_id);
+    if (!foodMaster) {
+      return NextResponse.json({ error: "Food master not found" }, { status: 404 });
+    }
+
+    const expiry = applyExpiryRule(
+      validation.input.purchased_at,
+      validation.input.expiry_date,
+      foodMaster,
+    );
+
+    const lot = await createInventoryLot({
+      food_master_id: validation.input.food_master_id,
+      quantity: validation.input.quantity,
+      purchased_at: validation.input.purchased_at,
+      ...expiry,
+    });
     return NextResponse.json(lot, { status: 201 });
   } catch (e) {
     console.error(e);

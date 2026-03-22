@@ -1,7 +1,17 @@
-import type { CreateInventoryLotInput } from "@/lib/types/database";
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+const isValidDate = (value: string): boolean =>
+  DATE_PATTERN.test(value) && !isNaN(Date.parse(value));
+
+type PostInventoryRequestBody = {
+  food_master_id: string;
+  quantity: number;
+  purchased_at: string;
+  expiry_date?: string | null;
+};
 
 type ValidationResult =
-  | { valid: true; input: CreateInventoryLotInput }
+  | { valid: true; input: PostInventoryRequestBody }
   | { valid: false; error: string };
 
 export const validateCreateInventoryLotInput = (body: unknown): ValidationResult => {
@@ -12,19 +22,21 @@ export const validateCreateInventoryLotInput = (body: unknown): ValidationResult
   const b = body as Record<string, unknown>;
 
   if (!b.food_master_id || typeof b.food_master_id !== "string") {
-    return { valid: false, error: "Missing required fields" };
+    return { valid: false, error: "Missing required field: food_master_id" };
   }
-  if (!b.quantity || typeof b.quantity !== "number") {
-    return { valid: false, error: "Missing required fields" };
+  if (typeof b.quantity !== "number" || b.quantity < 1) {
+    return { valid: false, error: "quantity must be a number >= 1" };
   }
   if (!b.purchased_at || typeof b.purchased_at !== "string") {
-    return { valid: false, error: "Missing required fields" };
+    return { valid: false, error: "Missing required field: purchased_at" };
   }
-  if (b.expiry_type !== "best_before" && b.expiry_type !== "use_by") {
-    return { valid: false, error: "Missing required fields" };
+  if (!isValidDate(b.purchased_at)) {
+    return { valid: false, error: "purchased_at must be a valid date in YYYY-MM-DD format" };
   }
-  if (b.expiry_source !== "estimated" && b.expiry_source !== "manual") {
-    return { valid: false, error: "Missing required fields" };
+
+  const expiry_date = typeof b.expiry_date === "string" ? b.expiry_date : null;
+  if (expiry_date !== null && !isValidDate(expiry_date)) {
+    return { valid: false, error: "expiry_date must be a valid date in YYYY-MM-DD format" };
   }
 
   return {
@@ -33,9 +45,7 @@ export const validateCreateInventoryLotInput = (body: unknown): ValidationResult
       food_master_id: b.food_master_id,
       quantity: b.quantity,
       purchased_at: b.purchased_at,
-      expiry_date: typeof b.expiry_date === "string" ? b.expiry_date : null,
-      expiry_type: b.expiry_type,
-      expiry_source: b.expiry_source,
+      expiry_date,
     },
   };
 };
