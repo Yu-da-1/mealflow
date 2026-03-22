@@ -72,3 +72,8 @@ export type RecipeRecommendationLogRow = {
   recommended_on: string;
   created_at: string;
 };
+
+export type ConsumeFromRecipeInput = {
+  recipe_id: string;
+  ingredient_keys: string[];
+};

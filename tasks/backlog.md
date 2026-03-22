@@ -136,9 +136,9 @@
 
 #### タスク
 
-- [ ] consumeLogic.ts（在庫減算ロジック）
-- [ ] POST /api/inventory/consume-from-recipe
-- [ ] recipe_recommendation_logs 記録処理
+- [x] consumeLogic.ts（在庫減算ロジック）
+- [x] POST /api/inventory/consume-from-recipe
+- [x] recipe_recommendation_logs 記録処理
 
 ---
 
