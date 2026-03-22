@@ -98,9 +98,9 @@
 
 #### タスク
 
-- [ ] matchRecipe.ts（一致判定）
-- [ ] scoreRecipe.ts（スコアリング）
-- [ ] recipeRepository
+- [x] matchRecipe.ts（一致判定）
+- [x] scoreRecipe.ts（スコアリング）
+- [x] recipeRepository
 
 ---
 

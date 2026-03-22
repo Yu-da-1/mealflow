@@ -1,31 +1,34 @@
-## Phase 2-1: 期限自動設定（ドメインロジック・API更新）
+## Phase 3-1: レシピ提案（ドメインロジック・Repository）
 
-- ブランチ: `feature/expiry-auto-setting`
+- ブランチ: `feature/recipe-domain-logic`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- 食品登録時に期限が自動設定される
+- レシピの一致判定・スコアリングのロジックが動く
 
 ### タスク
 
-- [x] expiryRules.ts（期限自動設定ロジック）
-- [x] POST /api/inventory に期限自動設定を組み込む
+- [x] matchRecipe.ts（一致判定）
+- [x] scoreRecipe.ts（スコアリング）
+- [x] recipeRepository
 
 ### plan
 
 - 影響ファイル:
-  - src/domain/inventory/expiryRules.ts（新規・純粋関数）
-  - src/domain/inventory/validateCreateInventoryLotInput.ts（更新・expiry_type/expiry_source を除去）
-  - src/server/repositories/foodMasterRepository.ts（getFoodMasterById を追加）
-  - src/app/api/inventory/route.ts（POST を更新）
+  - src/lib/types/database.ts（RecipeRow / RecipeIngredientRow / RecipeRecommendationLogRow を追加）
+  - src/lib/types/ui.ts（RecipeWithIngredients を追加）
+  - src/domain/recipe/matchRecipe.ts（新規・一致判定 + inventoryKeySet ビルド関数）
+  - src/domain/recipe/scoreRecipe.ts（新規・スコアリング）
+  - src/server/repositories/recipeRepository.ts（新規）
 - 実装順:
-  1. expiryRules.ts を実装（applyExpiryRule 純粋関数）
-  2. validateCreateInventoryLotInput を更新（リクエスト body から expiry_type/expiry_source を除去）
-  3. foodMasterRepository に getFoodMasterById を追加
-  4. POST /api/inventory を更新（food_master 取得 → applyExpiryRule → createInventoryLot）
+  1. database.ts に RecipeRow / RecipeIngredientRow / RecipeRecommendationLogRow を追加
+  2. ui.ts に RecipeWithIngredients を追加
+  3. matchRecipe.ts を実装（buildInventoryKeySet / matchRecipe）
+  4. scoreRecipe.ts を実装
+  5. recipeRepository.ts を実装（getActiveRecipesWithIngredients / getRecentlyRecommendedRecipeIds）
 - 設計メモ:
-  - expiry_date が null/未入力 → purchased_at + default_expiry_days で計算、expiry_source = 'estimated'
-  - expiry_date が入力済み → そのまま使用、expiry_source = 'manual'
-  - expiry_type は常に food_master.default_expiry_type を使用（クライアントから指定しない）
-  - food_master が見つからない場合は 404 を返す
+  - 一致判定: recipe_ingredient の recipe_match_key が在庫の recipe_match_key OR parent_recipe_match_key に含まれれば一致
+  - is_required=true の食材が全て一致するレシピのみ候補
+  - スコア = (期限当日・翌日の食材数 × 20) + (一致食材数 × 10)
+  - buildInventoryKeySet は domain 層に置き、API ルートでロジックを書かないようにする
