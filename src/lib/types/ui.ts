@@ -1,6 +1,6 @@
 // UI用の共通型定義
 
-import type { InventoryLotRow } from "./database";
+import type { InventoryLotRow, RecipeIngredientRow, RecipeRow } from "./database";
 
 export type InventorySummaryItem = {
   food_master_id: string;
@@ -10,4 +10,12 @@ export type InventorySummaryItem = {
   nearest_expiry_date: string | null;
   nearest_expiry_type: "best_before" | "use_by" | null;
   lots: InventoryLotRow[];
+};
+
+export type RecipeWithIngredients = RecipeRow & {
+  ingredients: RecipeIngredientRow[];
+};
+
+export type RecommendedRecipe = RecipeWithIngredients & {
+  score: number;
 };
