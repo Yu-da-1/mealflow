@@ -7,7 +7,7 @@
 
 ## Phase 0: プロジェクト初期化
 
-- ブランチ: `chore/phase0-init`
+- ブランチ: `chore/project-init`
 - PR: このPhase完了後に1PR
 
 ### 完了条件
@@ -32,7 +32,7 @@
 
 ### Phase 1-1: 型定義・Repository
 
-- ブランチ: `feature/phase1-types-repository`
+- ブランチ: `feature/inventory-types-repository`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
@@ -50,7 +50,7 @@
 
 ### Phase 1-2: APIルート
 
-- ブランチ: `feature/phase1-api`
+- ブランチ: `feature/inventory-api-routes`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
@@ -71,7 +71,7 @@
 
 ### Phase 2-1: ドメインロジック・API更新
 
-- ブランチ: `feature/phase2-expiry-logic`
+- ブランチ: `feature/expiry-auto-setting`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
@@ -89,7 +89,7 @@
 
 ### Phase 3-1: ドメインロジック・Repository
 
-- ブランチ: `feature/phase3-recipe-domain`
+- ブランチ: `feature/recipe-domain-logic`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
@@ -106,7 +106,7 @@
 
 ### Phase 3-2: APIルート・seedデータ
 
-- ブランチ: `feature/phase3-recipe-api`
+- ブランチ: `feature/recipe-api-seed`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
@@ -126,7 +126,7 @@
 
 ### Phase 4-1: ドメインロジック・API
 
-- ブランチ: `feature/phase4-consume`
+- ブランチ: `feature/inventory-consume`
 - PR: このグループ完了後に1PR
 
 #### 完了条件

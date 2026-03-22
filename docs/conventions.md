@@ -98,18 +98,34 @@ import { RecipeCard } from "./RecipeCard";
 
 ---
 
-## テストファイル
-
-| 対象       | 配置                                 | 命名例                        |
-| ---------- | ------------------------------------ | ----------------------------- |
-| domain関数 | `src/domain/[機能名]/__tests__/`     | `scoreRecipe.test.ts`         |
-| repository | `src/server/repositories/__tests__/` | `inventoryRepository.test.ts` |
-
----
-
 ## その他
 
 - `export default` は使わない。すべて named export にする
-  - ただし Next.js App Router が `export default` を要求するファイル（`page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`）は例外とする
 - 型のみのimportは `import type` を使う
 - `any` は使わない。どうしても必要な場合はコメントで理由を書く
+
+---
+
+## ブランチ命名規則
+
+### prefix
+
+| prefix      | 用途             | 例                                   |
+| ----------- | ---------------- | ------------------------------------ |
+| `feature/`  | 新機能の実装     | `feature/inventory-types-repository` |
+| `fix/`      | バグ修正         | `fix/expiry-date-calculation`        |
+| `chore/`    | 設定・環境整備   | `chore/project-init`                 |
+| `refactor/` | リファクタリング | `refactor/recipe-scoring-logic`      |
+
+### 命名ルール
+
+- prefix の後は kebab-case で機能名を書く
+- Phase番号は含めない（機能名だけで意味が通るようにする）
+- 短く具体的に（3〜5単語が目安）
+
+```
+✅ feature/inventory-types-repository
+✅ fix/expiry-date-calculation
+❌ feature/phase1-1-types-repository  （Phase番号は不要）
+❌ feature/implement-inventory-types-and-repository-for-food-management  （長すぎ）
+```
