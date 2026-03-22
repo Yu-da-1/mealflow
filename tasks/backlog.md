@@ -42,9 +42,9 @@
 
 #### タスク
 
-- [ ] 型定義（FoodMasterRow / InventoryLotRow / InventorySummaryItem）
-- [ ] foodMasterRepository（検索）
-- [ ] inventoryRepository（CRUD）
+- [x] 型定義（FoodMasterRow / InventoryLotRow / InventorySummaryItem）
+- [x] foodMasterRepository（検索）
+- [x] inventoryRepository（CRUD）
 
 ---
 
@@ -80,8 +80,8 @@
 
 #### タスク
 
-- [ ] expiryRules.ts（期限自動設定ロジック）
-- [ ] POST /api/inventory に期限自動設定を組み込む
+- [x] expiryRules.ts（期限自動設定ロジック）
+- [x] POST /api/inventory に期限自動設定を組み込む
 
 ---
 
