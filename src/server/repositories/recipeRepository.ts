@@ -67,3 +67,17 @@ export const getRecentlyRecommendedRecipeIds = async (days: number = 3): Promise
   if (error) throw error;
   return [...new Set((data as { recipe_id: string }[]).map((r) => r.recipe_id))];
 };
+
+/**
+ * レシピの提案履歴を本日付で記録する。
+ *
+ * @param recipeId - 提案されたレシピのID
+ */
+export const createRecommendationLog = async (recipeId: string): Promise<void> => {
+  const today = new Date().toISOString().slice(0, 10);
+  const { error } = await supabase
+    .from("recipe_recommendation_logs")
+    .insert({ recipe_id: recipeId, recommended_on: today });
+
+  if (error) throw error;
+};

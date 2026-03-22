@@ -1,36 +1,37 @@
-## Phase 3-2: レシピAPIルート・seedデータ
+## Phase 4-1: 在庫減算（バックエンド）
 
-- ブランチ: `feature/recipe-api-seed`
+- ブランチ: `feature/inventory-consume`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- おすすめレシピAPIが3件返す
-- 直近3日の提案済みレシピが除外される
+- レシピ確定後に在庫が減算される
+- 提案履歴が記録される
 
 ### タスク
 
-- [x] GET /api/recipes/recommended
-- [x] GET /api/recipes/:id
-- [x] レシピseedデータ（30〜50件）
+- [x] consumeLogic.ts（在庫減算ロジック）
+- [x] POST /api/inventory/consume-from-recipe
+- [x] recipe_recommendation_logs 記録処理
 
 ### plan
 
 - 影響ファイル:
-  - src/lib/types/ui.ts（RecommendedRecipeResponse を追加）
-  - src/domain/recipe/buildRecommendReason.ts（新規・reason文字列生成）
-  - src/server/repositories/recipeRepository.ts（getRecipeById を追加）
-  - src/app/api/recipes/recommended/route.ts（新規・GET）
-  - src/app/api/recipes/[recipeId]/route.ts（新規・GET）
-  - supabase/seed.sql（新規・レシピ35件 + ingredients）
+  - `src/lib/types/database.ts`（ConsumeFromRecipeInput 型追加）
+  - `src/domain/inventory/consumeLogic.ts`（新規: 在庫減算ロジック純粋関数）
+  - `src/domain/inventory/validateConsumeFromRecipeInput.ts`（新規: 入力バリデーション）
+  - `src/server/repositories/inventoryRepository.ts`（batchUpdateInventoryLots 追加）
+  - `src/server/repositories/recipeRepository.ts`（createRecommendationLog 追加）
+  - `src/app/api/inventory/consume-from-recipe/route.ts`（新規: POSTルート）
 - 実装順:
-  1. ui.ts に RecommendedRecipeResponse を追加
-  2. buildRecommendReason.ts を実装
-  3. recipeRepository に getRecipeById を追加
-  4. GET /api/recipes/recommended を実装
-  5. GET /api/recipes/:id を実装
-  6. supabase/seed.sql を作成
+  1. 型定義を追加する（ConsumeFromRecipeInput）
+  2. consumeLogic.ts（純粋関数: 食材キーから消費対象ロットとその更新内容を算出）
+  3. validateConsumeFromRecipeInput.ts（リクエスト入力のバリデーション）
+  4. inventoryRepository に batchUpdateInventoryLots を追加
+  5. recipeRepository に createRecommendationLog を追加
+  6. POST /api/inventory/consume-from-recipe ルートを実装
 - 設計メモ:
-  - recommended レスポンスは id/title/description/cooking_time_minutes/reason のみ（docs/api.md準拠）
-  - reason: 期限切れ間近の食材があれば「期限が近いXXを使えます」、なければ「今ある食材だけで作れます」
-  - seed.sql は INSERT文。recipe_match_key は food_masters で使う想定のキー
+  - consumeLogic は副作用なし。ロット更新内容の差分を返す
+  - 各 ingredient_key について 1 単位を消費
+  - ロット優先順: expiry_date 近い順（null は末尾）→ purchased_at 古い順
+  - quantity が 0 になったロットは status='consumed' にする
