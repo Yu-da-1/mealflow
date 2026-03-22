@@ -59,11 +59,11 @@
 
 #### タスク
 
-- [ ] GET /api/food-masters
-- [ ] GET /api/inventory（集約）
-- [ ] POST /api/inventory
-- [ ] PATCH /api/inventory/:lotId
-- [ ] DELETE /api/inventory/:lotId
+- [x] GET /api/food-masters
+- [x] GET /api/inventory（集約）
+- [x] POST /api/inventory
+- [x] PATCH /api/inventory/:lotId
+- [x] DELETE /api/inventory/:lotId
 
 ---
 
