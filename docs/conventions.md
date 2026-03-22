@@ -129,3 +129,42 @@ import { RecipeCard } from "./RecipeCard";
 ❌ feature/phase1-1-types-repository  （Phase番号は不要）
 ❌ feature/implement-inventory-types-and-repository-for-food-management  （長すぎ）
 ```
+
+---
+
+## コメント・JSDoc
+
+**関数にはJSDocを書く**
+
+エクスポートする関数すべてにJSDocを付ける。
+説明・@param・@returns の3点を必ず書く。
+
+```typescript
+/**
+ * 在庫ロットをスコアリングしてレシピを推薦する
+ *
+ * @param inventory - アクティブな在庫ロット一覧
+ * @param recipes - 候補レシピ一覧
+ * @param today - 基準日（期限判定に使用）
+ * @returns スコア降順で上位3件のレシピ
+ */
+export const recommendRecipes = (
+  inventory: InventoryLotRow[],
+  recipes: Recipe[],
+  today: Date
+): RecommendedRecipe[] => { ... }
+```
+
+**インラインコメントはなぜそうしたかを書く**
+
+コードを読めばわかることは書かない。意図・ルール・理由を書く。
+
+```typescript
+// ✅ ドメインのルールや意図
+// expiry_dateがnullのロットは期限なしとみなし末尾に回す
+const sorted = lots.sort(...)
+
+// ❌ コードを読めばわかること（不要）
+// ソートする
+const sorted = lots.sort(...)
+```
