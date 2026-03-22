@@ -1,34 +1,36 @@
-## Phase 3-1: レシピ提案（ドメインロジック・Repository）
+## Phase 3-2: レシピAPIルート・seedデータ
 
-- ブランチ: `feature/recipe-domain-logic`
+- ブランチ: `feature/recipe-api-seed`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- レシピの一致判定・スコアリングのロジックが動く
+- おすすめレシピAPIが3件返す
+- 直近3日の提案済みレシピが除外される
 
 ### タスク
 
-- [x] matchRecipe.ts（一致判定）
-- [x] scoreRecipe.ts（スコアリング）
-- [x] recipeRepository
+- [x] GET /api/recipes/recommended
+- [x] GET /api/recipes/:id
+- [x] レシピseedデータ（30〜50件）
 
 ### plan
 
 - 影響ファイル:
-  - src/lib/types/database.ts（RecipeRow / RecipeIngredientRow / RecipeRecommendationLogRow を追加）
-  - src/lib/types/ui.ts（RecipeWithIngredients を追加）
-  - src/domain/recipe/matchRecipe.ts（新規・一致判定 + inventoryKeySet ビルド関数）
-  - src/domain/recipe/scoreRecipe.ts（新規・スコアリング）
-  - src/server/repositories/recipeRepository.ts（新規）
+  - src/lib/types/ui.ts（RecommendedRecipeResponse を追加）
+  - src/domain/recipe/buildRecommendReason.ts（新規・reason文字列生成）
+  - src/server/repositories/recipeRepository.ts（getRecipeById を追加）
+  - src/app/api/recipes/recommended/route.ts（新規・GET）
+  - src/app/api/recipes/[recipeId]/route.ts（新規・GET）
+  - supabase/seed.sql（新規・レシピ35件 + ingredients）
 - 実装順:
-  1. database.ts に RecipeRow / RecipeIngredientRow / RecipeRecommendationLogRow を追加
-  2. ui.ts に RecipeWithIngredients を追加
-  3. matchRecipe.ts を実装（buildInventoryKeySet / matchRecipe）
-  4. scoreRecipe.ts を実装
-  5. recipeRepository.ts を実装（getActiveRecipesWithIngredients / getRecentlyRecommendedRecipeIds）
+  1. ui.ts に RecommendedRecipeResponse を追加
+  2. buildRecommendReason.ts を実装
+  3. recipeRepository に getRecipeById を追加
+  4. GET /api/recipes/recommended を実装
+  5. GET /api/recipes/:id を実装
+  6. supabase/seed.sql を作成
 - 設計メモ:
-  - 一致判定: recipe_ingredient の recipe_match_key が在庫の recipe_match_key OR parent_recipe_match_key に含まれれば一致
-  - is_required=true の食材が全て一致するレシピのみ候補
-  - スコア = (期限当日・翌日の食材数 × 20) + (一致食材数 × 10)
-  - buildInventoryKeySet は domain 層に置き、API ルートでロジックを書かないようにする
+  - recommended レスポンスは id/title/description/cooking_time_minutes/reason のみ（docs/api.md準拠）
+  - reason: 期限切れ間近の食材があれば「期限が近いXXを使えます」、なければ「今ある食材だけで作れます」
+  - seed.sql は INSERT文。recipe_match_key は food_masters で使う想定のキー
