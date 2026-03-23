@@ -45,6 +45,9 @@ pnpm eslint . --max-warnings 0 # lint厳密チェック
 pnpm vitest run                # テスト実行
 ```
 
+`src/app/` 配下のファイルを移動・削除した後は `.next` キャッシュが古い参照を持つ。
+`tsc` を実行する前に必ず `rm -rf .next` を行うこと。
+
 ## ワークフロー
 
 実装時は `.claude/commands/implement.md` の Explore → Plan → Implement → Verify → Record に従う。

@@ -130,6 +130,17 @@ import { RecipeCard } from "./RecipeCard";
 ❌ feature/implement-inventory-types-and-repository-for-food-management  （長すぎ）
 ```
 
+### ブランチは必ず main から切る
+
+別の関心事（例: 作業中に気づいたリファクタ）は、**作業中のブランチからではなく main から新しいブランチを切って**コミットする。
+
+```
+❌ feature/xxx でリファクタコミットを作り、後で分離しようとする
+✅ git stash → git checkout main → git checkout -b refactor/yyy → 実装 → git checkout feature/xxx → git stash pop
+```
+
+作業中ブランチに混ぜてしまうと、ブランチの作り直し・cherry-pick・untracked ファイルの残骸など、後始末が複雑になる。
+
 ---
 
 ## コメント・JSDoc
