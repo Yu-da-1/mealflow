@@ -142,6 +142,113 @@
 
 ---
 
-## Phase 5: UI実装（画面設計完了後に追加）
+## Phase 5: UI実装
 
-※ 画面設計が完了してから各Phaseのタスクを追記する
+Pencilデザイン（design.pen）の5画面を1画面ずつ実装する。
+共通レイアウトを先に作り、その後各画面を順に実装する。
+
+- オレンジ系プライマリカラー（#F97316 相当）
+- 左サイドバー固定（240px）＋右コンテンツエリア（残り幅）
+- 画面ごとに1ブランチ・1PR
+
+---
+
+### Phase 5-0: 共通レイアウト（サイドバー）
+
+- ブランチ: `feature/ui-layout`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- サイドバー（ロゴ・メニュー・ユーザー情報）が表示される
+- 各ページへのナビゲーションが機能する
+- アクティブページがサイドバーでハイライトされる
+
+#### タスク
+
+- [x] `src/features/layout/` にサイドバーコンポーネント作成
+- [x] `src/app/(frontend)/layout.tsx` にサイドバー組み込み
+- [x] Tailwind でオレンジ系カラーをカスタム設定（tailwind.config.ts）
+
+---
+
+### Phase 5-1: ホーム画面
+
+- ブランチ: `feature/ui-home`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- 期限が近い食品リストが表示される（期限順）
+- おすすめレシピが3件表示される
+- 各レシピカードから「詳細を見る」でレシピ詳細画面へ遷移できる
+
+#### タスク
+
+- [ ] `src/features/home/` にホームページコンポーネント作成
+- [ ] `src/app/(frontend)/page.tsx` にホームページ組み込み
+- [ ] GET /api/inventory から期限近い食品を取得して表示
+- [ ] GET /api/recipes/recommended からレシピを取得して表示
+
+---
+
+### Phase 5-2: 食品一覧画面
+
+- ブランチ: `feature/ui-food-list`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- 登録済み食品がカード形式で表示される
+- 各カードに食品名・数量・期限が表示される
+- 「詳細を見る」でロット詳細モーダルが開く
+- モーダル内でロットの追加・編集・削除ができる
+
+#### タスク
+
+- [ ] `src/features/inventory/` に食品一覧ページコンポーネント作成
+- [ ] `src/app/(frontend)/inventory/page.tsx` 作成
+- [ ] GET /api/inventory からデータ取得・表示
+- [ ] 食品詳細モーダルコンポーネント作成（ロット一覧・追加・削除）
+- [ ] ロット編集フォーム（PATCH /api/inventory/:lotId）※Pencilデザインに編集ボタンを追加
+
+---
+
+### Phase 5-3: 食品登録画面
+
+- ブランチ: `feature/ui-food-register`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- 食品名（マスタ検索）・数量・購入日・期限種別を入力できる
+- 「自動設定」選択時は期限日が自動入力される
+- 登録後に食品一覧へリダイレクトされる
+
+#### タスク
+
+- [ ] `src/features/inventory/` に食品登録フォームコンポーネント作成
+- [ ] `src/app/(frontend)/inventory/new/page.tsx` 作成
+- [ ] GET /api/food-masters で食品名インクリメンタル検索
+- [ ] POST /api/inventory で登録処理
+
+---
+
+### Phase 5-4: おすすめレシピ画面
+
+- ブランチ: `feature/ui-recipes`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- おすすめレシピ3件がカード表示される
+- 「詳細を見る」で使用食材の確認モーダルが開く
+- 「確定する」で在庫減算APIが呼ばれ食品一覧へ遷移する
+
+#### タスク
+
+- [ ] `src/features/recipes/` にレシピ一覧ページコンポーネント作成
+- [ ] `src/app/(frontend)/recipes/page.tsx` 作成
+- [ ] GET /api/recipes/recommended からレシピ取得・表示
+- [ ] 食材確認モーダルコンポーネント作成
+- [ ] POST /api/inventory/consume-from-recipe で在庫減算
