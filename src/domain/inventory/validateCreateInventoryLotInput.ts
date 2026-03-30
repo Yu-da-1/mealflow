@@ -24,8 +24,8 @@ export const validateCreateInventoryLotInput = (body: unknown): ValidationResult
   if (!b.food_master_id || typeof b.food_master_id !== "string") {
     return { valid: false, error: "Missing required field: food_master_id" };
   }
-  if (typeof b.quantity !== "number" || b.quantity < 1) {
-    return { valid: false, error: "quantity must be a number >= 1" };
+  if (typeof b.quantity !== "number" || !Number.isInteger(b.quantity) || b.quantity < 1) {
+    return { valid: false, error: "quantity must be an integer >= 1" };
   }
   if (!b.purchased_at || typeof b.purchased_at !== "string") {
     return { valid: false, error: "Missing required field: purchased_at" };
