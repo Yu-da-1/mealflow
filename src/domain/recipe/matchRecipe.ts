@@ -4,6 +4,7 @@ import type { RecipeWithIngredients } from "@/lib/types/ui";
 export type InventoryKeySet = {
   availableKeys: Set<string>;
   expiringKeys: Set<string>;
+  tomorrow: string;
 };
 
 export const buildInventoryKeySet = (
@@ -37,7 +38,7 @@ export const buildInventoryKeySet = (
     }
   }
 
-  return { availableKeys, expiringKeys };
+  return { availableKeys, expiringKeys, tomorrow: tomorrowStr };
 };
 
 export const matchRecipe = (recipe: RecipeWithIngredients, availableKeys: Set<string>): boolean => {
