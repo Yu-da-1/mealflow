@@ -185,10 +185,10 @@ Pencilデザイン（design.pen）の5画面を1画面ずつ実装する。
 
 #### タスク
 
-- [ ] `src/features/home/` にホームページコンポーネント作成
-- [ ] `src/app/(frontend)/page.tsx` にホームページ組み込み
-- [ ] GET /api/inventory から期限近い食品を取得して表示
-- [ ] GET /api/recipes/recommended からレシピを取得して表示
+- [x] `src/features/home/` にホームページコンポーネント作成
+- [x] `src/app/(frontend)/page.tsx` にホームページ組み込み
+- [x] GET /api/inventory から期限近い食品を取得して表示
+- [x] GET /api/recipes/recommended からレシピを取得して表示
 
 ---
 
