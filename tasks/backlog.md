@@ -206,11 +206,11 @@ Pencilデザイン（design.pen）の5画面を1画面ずつ実装する。
 
 #### タスク
 
-- [ ] `src/features/inventory/` に食品一覧ページコンポーネント作成
-- [ ] `src/app/(frontend)/inventory/page.tsx` 作成
-- [ ] GET /api/inventory からデータ取得・表示
-- [ ] 食品詳細モーダルコンポーネント作成（ロット一覧・追加・削除）
-- [ ] ロット編集フォーム（PATCH /api/inventory/:lotId）※Pencilデザインに編集ボタンを追加
+- [x] `src/features/inventory/` に食品一覧ページコンポーネント作成
+- [x] `src/app/(frontend)/inventory/page.tsx` 作成
+- [x] GET /api/inventory からデータ取得・表示
+- [x] 食品詳細モーダルコンポーネント作成（ロット一覧・追加・削除）
+- [x] ロット編集フォーム（PATCH /api/inventory/:lotId）※Pencilデザインに編集ボタンを追加
 
 ---
 

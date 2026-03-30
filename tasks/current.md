@@ -1,47 +1,39 @@
-## Phase 5-0: 共通レイアウト（サイドバー）✅
+## Phase 5-2: 食品一覧画面
 
-- ブランチ: `feature/ui-layout`
-- PR: このグループ完了後に1PR
-
-### タスク
-
-- [x] `src/features/layout/` にサイドバーコンポーネント作成
-- [x] `src/app/(frontend)/layout.tsx` にサイドバー組み込み
-- [x] Tailwind でオレンジ系カラーをカスタム設定（tailwind.config.ts）
-
----
-
-## Phase 5-1: ホーム画面
-
-- ブランチ: `feature/ui-home`
+- ブランチ: `feature/ui-food-list`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- 期限が近い食品リストが表示される（期限順）
-- おすすめレシピが3件表示される
-- 各レシピカードから「詳細を見る」でレシピ詳細画面へ遷移できる
+- 登録済み食品がカード形式で表示される
+- 各カードに食品名・数量・期限が表示される
+- 「詳細を見る」でロット詳細モーダルが開く
+- モーダル内でロットの追加・編集・削除ができる
 
 ### タスク
 
-- [x] `src/features/home/` にホームページコンポーネント作成
-- [x] `src/app/(frontend)/page.tsx` にホームページ組み込み
-- [x] GET /api/inventory から期限近い食品を取得して表示
-- [x] GET /api/recipes/recommended からレシピを取得して表示
+- [x] `src/features/inventory/` に食品一覧ページコンポーネント作成
+- [x] `src/app/(frontend)/inventory/page.tsx` 作成
+- [x] GET /api/inventory からデータ取得・表示
+- [x] 食品詳細モーダルコンポーネント作成（ロット一覧・追加・削除）
+- [x] ロット編集フォーム（PATCH /api/inventory/:lotId）
 
 ### plan
 
 - 影響ファイル:
-  - `src/features/home/components/HomeExpirationSection.tsx`（新規）
-  - `src/features/home/components/HomeRecipeSection.tsx`（新規）
-  - `src/app/(frontend)/page.tsx`（更新）
-  - `src/app/(frontend)/loading.tsx`（新規）
-- データ取得方針:
-  - `page.tsx` は `src/app/` 配下（ESLint制限なし）なので repositories + domain を直接呼ぶ
-  - レシピ推薦は API ルートと同じ関数群（buildInventoryKeySet / matchRecipe / scoreRecipe / buildRecommendReason）を使う
-  - feature コンポーネントはプレゼンテーショナル（props を受け取るだけ）
+  - `src/features/inventory/components/InventoryList.tsx`（新規・Client Component）
+  - `src/features/inventory/components/InventoryDetailModal.tsx`（新規・Client Component）
+  - `src/app/(frontend)/inventory/page.tsx`（新規・Server Component）
+- データフロー:
+  - `page.tsx` が repositories から直接データ取得 → `InventoryList` に props として渡す
+  - mutations（追加・編集・削除）後は `router.refresh()` で Server Component を再取得
+  - 並び順: 期限当日 → 翌日 → 近い順 → なし/遠い順（page.tsx でソート）
+- モーダル内容:
+  - ロット一覧（数量・購入日・期限日・期限種別・設定元）
+  - ロット追加フォーム（POST /api/inventory: food_master_id・quantity・purchased_at）
+  - ロット編集（PATCH /api/inventory/:lotId: quantity・expiry_date・expiry_type）
+  - ロット削除（DELETE /api/inventory/:lotId）
 - 実装順:
-  1. HomeExpirationSection.tsx（期限リスト表示）
-  2. HomeRecipeSection.tsx（レシピカード表示）
-  3. page.tsx（データ取得 + レイアウト）
-  4. loading.tsx（スケルトン）
+  1. InventoryDetailModal.tsx（モーダル + ロット操作フォーム）
+  2. InventoryList.tsx（カード一覧 + モーダル開閉制御）
+  3. page.tsx（データ取得・ソート）
