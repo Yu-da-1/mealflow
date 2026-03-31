@@ -1,4 +1,45 @@
 -- ============================================================
+-- Food master seed data (36 items)
+-- ============================================================
+INSERT INTO food_masters (display_name, category, subcategory, recipe_match_key, parent_recipe_match_key, default_expiry_type, default_expiry_days, aliases, is_active) VALUES
+  ('卵',         '野菜・卵',   NULL,       'egg',            NULL, 'best_before', 14,  '{}', true),
+  ('牛乳',       '乳製品',     NULL,       'milk',           NULL, 'best_before',  7,  '{}', true),
+  ('豆腐',       '大豆製品',   NULL,       'tofu',           NULL, 'use_by',       5,  '{}', true),
+  ('鶏もも肉',   '肉類',       '鶏肉',     'chicken_thigh',  NULL, 'use_by',       3,  '{}', true),
+  ('鶏むね肉',   '肉類',       '鶏肉',     'chicken_breast', NULL, 'use_by',       3,  '{}', true),
+  ('豚バラ肉',   '肉類',       '豚肉',     'pork_belly',     NULL, 'use_by',       3,  '{}', true),
+  ('豚ロース',   '肉類',       '豚肉',     'pork_loin',      NULL, 'use_by',       3,  '{}', true),
+  ('豚ひき肉',   '肉類',       '豚肉',     'ground_pork',    NULL, 'use_by',       3,  '{}', true),
+  ('牛ひき肉',   '肉類',       '牛肉',     'ground_beef',    NULL, 'use_by',       3,  '{}', true),
+  ('鮭',         '魚介類',     NULL,       'salmon',         NULL, 'use_by',       2,  '{}', true),
+  ('まぐろ',     '魚介類',     NULL,       'tuna',           NULL, 'use_by',       2,  '{}', true),
+  ('ほうれん草', '野菜',       '葉物',     'spinach',        NULL, 'best_before',  5,  '{}', true),
+  ('もやし',     '野菜',       NULL,       'bean_sprouts',   NULL, 'use_by',       3,  '{}', true),
+  ('キャベツ',   '野菜',       '葉物',     'cabbage',        NULL, 'best_before', 14,  '{}', true),
+  ('玉ねぎ',     '野菜',       NULL,       'onion',          NULL, 'best_before', 30,  '{}', true),
+  ('にんじん',   '野菜',       NULL,       'carrot',         NULL, 'best_before', 21,  '{}', true),
+  ('じゃがいも', '野菜',       NULL,       'potato',         NULL, 'best_before', 30,  '{}', true),
+  ('トマト',     '野菜',       NULL,       'tomato',         NULL, 'best_before',  7,  '{}', true),
+  ('長ねぎ',     '野菜',       '葉物',     'green_onion',    NULL, 'best_before',  7,  '{}', true),
+  ('しょうが',   '野菜',       '香味野菜', 'ginger',         NULL, 'best_before', 14,  '{}', true),
+  ('にんにく',   '野菜',       '香味野菜', 'garlic',         NULL, 'best_before', 30,  '{}', true),
+  ('しいたけ',   'きのこ',     NULL,       'mushroom',       NULL, 'best_before',  5,  '{}', true),
+  ('なす',       '野菜',       NULL,       'eggplant',       NULL, 'best_before',  5,  '{}', true),
+  ('ピーマン',   '野菜',       NULL,       'bell_pepper',    NULL, 'best_before',  7,  '{}', true),
+  ('ブロッコリー','野菜',       NULL,       'broccoli',       NULL, 'best_before',  7,  '{}', true),
+  ('レタス',     '野菜',       '葉物',     'lettuce',        NULL, 'best_before',  5,  '{}', true),
+  ('きゅうり',   '野菜',       NULL,       'cucumber',       NULL, 'best_before',  5,  '{}', true),
+  ('大根',       '野菜',       NULL,       'radish',         NULL, 'best_before', 14,  '{}', true),
+  ('とうもろこし','野菜',       NULL,       'corn',           NULL, 'best_before',  3,  '{}', true),
+  ('白米',       '穀類',       NULL,       'rice',           NULL, 'best_before', 365, '{}', true),
+  ('うどん',     '麺類',       NULL,       'udon',           NULL, 'best_before',  3,  '{}', true),
+  ('そば',       '麺類',       NULL,       'soba',           NULL, 'best_before',  3,  '{}', true),
+  ('パスタ',     '麺類',       NULL,       'pasta',          NULL, 'best_before', 730, '{}', true),
+  ('食パン',     'パン',       NULL,       'bread',          NULL, 'best_before',  5,  '{}', true),
+  ('納豆',       '大豆製品',   NULL,       'natto',          NULL, 'best_before',  7,  '{}', true),
+  ('豚こま切れ肉','肉類',      '豚肉',     'pork_bits',      NULL, 'use_by',       3,  '{}', true);
+
+-- ============================================================
 -- Recipe seed data (35 recipes)
 -- ============================================================
 -- recipe_match_key 凡例:
