@@ -227,10 +227,10 @@ Pencilデザイン（design.pen）の5画面を1画面ずつ実装する。
 
 #### タスク
 
-- [ ] `src/features/inventory/` に食品登録フォームコンポーネント作成
-- [ ] `src/app/(frontend)/inventory/new/page.tsx` 作成
-- [ ] GET /api/food-masters で食品名インクリメンタル検索
-- [ ] POST /api/inventory で登録処理
+- [x] `src/features/inventory/` に食品登録フォームコンポーネント作成
+- [x] `src/app/(frontend)/inventory/new/page.tsx` 作成
+- [x] GET /api/food-masters で食品名インクリメンタル検索
+- [x] POST /api/inventory で登録処理
 
 ---
 
