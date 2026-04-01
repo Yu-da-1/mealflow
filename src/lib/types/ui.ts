@@ -21,5 +21,6 @@ export type RecommendedRecipeResponse = {
   title: string;
   description: string | null;
   cooking_time_minutes: number | null;
+  instructions: string | null;
   reason: string;
 };

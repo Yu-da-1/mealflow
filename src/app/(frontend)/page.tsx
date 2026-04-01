@@ -66,6 +66,7 @@ function buildRecommendedRecipes(
       title: recipe.title,
       description: recipe.description,
       cooking_time_minutes: recipe.cooking_time_minutes,
+      instructions: recipe.instructions,
       reason: buildRecommendReason(recipe, expiringKeys, keyToDisplayName),
     }));
 }
