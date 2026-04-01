@@ -101,6 +101,9 @@ quality-checker が完了報告を返したら次のステップへ進む。
 
 **以下のいずれかに該当する場合は harness-improver を呼び出す**
 - quality-checker でループ検出が発生した
+- git 操作（checkout・pull・push など）で想定外のエラーや stash / conflict が発生した
+- ワークフローの手順通りに進めたのに回避策（stash・cherry-pick など）が必要になった
+- PR 作成後に取り残されたコミットが発生した
 - 想定外のエラーや手順の抜けがあった
 - 同じ問題に2回以上ハマった
 
