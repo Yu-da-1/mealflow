@@ -6,7 +6,9 @@ import {
 } from "@/server/repositories/recipeRepository";
 import { generateAndSaveRecipes } from "@/server/repositories/claudeRecipeRepository";
 import type { IngredientForPrompt } from "@/domain/recipe/generateRecipePrompt";
+import type { RecommendedRecipeResponse } from "@/lib/types/ui";
 import { RecipeList } from "@/features/recipes/components/RecipeList";
+import { RecipeError } from "@/features/recipes/components/RecipeError";
 
 const RECOMMEND_COUNT = 3;
 
@@ -45,25 +47,35 @@ export default async function RecipesPage() {
     is_expiring: expiringIds.has(fm.id),
   }));
 
-  const recipes = await generateAndSaveRecipes(ingredients, recentTitles, RECOMMEND_COUNT);
-  await Promise.all(recipes.map((r) => createRecommendationLog(r.id)));
+  const header = (
+    <div className="mb-6">
+      <h1 className="text-xl font-bold text-foreground">おすすめレシピ</h1>
+      <p className="mt-1 text-sm text-muted-foreground">在庫をもとに提案したレシピです</p>
+    </div>
+  );
 
-  const recommended = recipes.map((r) => ({
-    id: r.id,
-    title: r.title,
-    description: r.description,
-    cooking_time_minutes: r.cooking_time_minutes,
-    instructions: r.instructions,
-    reason: r.reason,
-  }));
+  let recommended: RecommendedRecipeResponse[] | null = null;
+
+  try {
+    const recipes = await generateAndSaveRecipes(ingredients, recentTitles, RECOMMEND_COUNT);
+    await Promise.all(recipes.map((r) => createRecommendationLog(r.id)));
+
+    recommended = recipes.map((r) => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      cooking_time_minutes: r.cooking_time_minutes,
+      instructions: r.instructions,
+      reason: r.reason,
+    }));
+  } catch (e) {
+    console.error("Failed to generate recipes:", e);
+  }
 
   return (
     <div className="p-6 max-w-2xl">
-      <div className="mb-6">
-        <h1 className="text-xl font-bold text-foreground">おすすめレシピ</h1>
-        <p className="mt-1 text-sm text-muted-foreground">在庫をもとに提案したレシピです</p>
-      </div>
-      <RecipeList recipes={recommended} />
+      {header}
+      {recommended !== null ? <RecipeList recipes={recommended} /> : <RecipeError />}
     </div>
   );
 }
