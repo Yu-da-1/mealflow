@@ -1,18 +1,19 @@
-## Phase 5-4: おすすめレシピ画面
+## Phase 6-1: Claude API 統合・プロンプト設計・APIルート更新
 
-- ブランチ: `feature/ui-recipes`
+- ブランチ: `feature/claude-recipe-generation`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- おすすめレシピ3件がカード表示される
-- 「詳細を見る」で使用食材の確認モーダルが開く
-- 「確定する」で在庫減算APIが呼ばれ食品一覧へ遷移する
+- `ANTHROPIC_API_KEY` を環境変数で管理できる
+- 在庫食材を渡すと Claude API からレシピ3件（タイトル・説明・手順・調理時間）が返る
+- `GET /api/recipes/recommended` が Claude 生成レシピを返す
 
 ### タスク
 
-- [x] `src/features/recipes/` にレシピ一覧ページコンポーネント作成
-- [x] `src/app/(frontend)/recipes/page.tsx` 作成
-- [x] GET /api/recipes/recommended からレシピ取得・表示
-- [x] 食材確認モーダルコンポーネント作成
-- [x] POST /api/inventory/consume-from-recipe で在庫減算
+- [ ] `@anthropic-ai/sdk` をインストール
+- [ ] `ANTHROPIC_API_KEY` を `.env.local` と `.env.example` に追加
+- [ ] `src/server/repositories/claudeRecipeRepository.ts` を作成（Claude API 呼び出し）
+- [ ] プロンプト設計（在庫食材 → 日本語レシピ3件・JSON形式で返す）
+- [ ] `src/domain/recipe/generateRecipePrompt.ts` を作成（プロンプト組み立て純粋関数）
+- [ ] `GET /api/recipes/recommended` を Claude 生成に切り替え
