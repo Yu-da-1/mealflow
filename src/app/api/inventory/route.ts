@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { buildInventorySummary } from "@/domain/inventory/buildInventorySummary";
@@ -53,6 +54,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
       purchased_at: validation.input.purchased_at,
       ...expiry,
     });
+    revalidateTag("recommended-recipes", {});
     return NextResponse.json(lot, { status: 201 });
   } catch (e) {
     console.error(e);

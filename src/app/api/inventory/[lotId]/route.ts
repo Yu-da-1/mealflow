@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { validateUpdateInventoryLotInput } from "@/domain/inventory/validateUpdateInventoryLotInput";
@@ -22,6 +23,7 @@ export const PATCH = async (request: NextRequest, { params }: Params): Promise<N
 
   try {
     const lot = await updateInventoryLot(lotId, validation.input);
+    revalidateTag("recommended-recipes", {});
     return NextResponse.json(lot);
   } catch (e) {
     console.error(e);
@@ -34,6 +36,7 @@ export const DELETE = async (_request: NextRequest, { params }: Params): Promise
 
   try {
     await deleteInventoryLot(lotId);
+    revalidateTag("recommended-recipes", {});
     return new NextResponse(null, { status: 204 });
   } catch (e) {
     console.error(e);

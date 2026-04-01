@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { computeConsumption } from "@/domain/inventory/consumeLogic";
@@ -32,9 +33,8 @@ export const POST = async (request: NextRequest): Promise<NextResponse> => {
     const updates = computeConsumption(lots, foodMasters, ingredient_keys);
 
     await batchUpdateInventoryLots(updates);
-
     await createRecommendationLog(recipe_id);
-
+    revalidateTag("recommended-recipes", {});
     return NextResponse.json({ updated: updates.length });
   } catch (e) {
     console.error(e);
