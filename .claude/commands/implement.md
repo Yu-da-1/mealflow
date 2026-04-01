@@ -7,22 +7,16 @@ tasks/current.md のタスクを実行する。
 
 ## 0. 準備｜タスクとブランチを用意する
 
-### tasks/current.md が空の場合
-
-`tasks/backlog.md` の先頭の未完了グループを `tasks/current.md` に移す。
-
-### 指示が一言で来た場合（例:「Phase1-1やって」）
-
-`tasks/backlog.md` から該当グループを読み、`tasks/current.md` に書き起こす。
-
 ### すでにcurrent.mdにタスクが書いてある場合
 
 そのまま Explore に進む。
 
-### ブランチを切る
+### tasks/current.md が空の場合（または一言指示の場合）
 
-`tasks/current.md` に記載のブランチ名で作業ブランチを切る。
-ブランチ名は `docs/conventions.md` のブランチ命名規則に従うこと。
+以下の順で行う。**`current.md` を書く前にブランチを切ること（順序が逆だと checkout 時に競合が起きる）。**
+
+1. `tasks/backlog.md` から対象グループのブランチ名を確認する
+2. ブランチを切る
 
 ```bash
 git fetch origin
@@ -30,6 +24,8 @@ git checkout main
 git pull origin main
 git checkout -b [ブランチ名]
 ```
+
+3. 新しいブランチ上で `tasks/current.md` にタスク内容を書き起こす
 
 ---
 
