@@ -68,6 +68,16 @@ export const getRecentlyRecommendedRecipeIds = async (days: number = 3): Promise
   return [...new Set((data as { recipe_id: string }[]).map((r) => r.recipe_id))];
 };
 
+export const getRecentlyRecommendedTitles = async (days: number = 3): Promise<string[]> => {
+  const recentIds = await getRecentlyRecommendedRecipeIds(days);
+  if (recentIds.length === 0) return [];
+
+  const { data, error } = await supabase.from("recipes").select("title").in("id", recentIds);
+
+  if (error) throw error;
+  return (data as { title: string }[]).map((r) => r.title);
+};
+
 /**
  * レシピの提案履歴を本日付で記録する。
  *
