@@ -98,6 +98,20 @@ export function RecipeConfirmModal({ recipe, reason, onClose }: RecipeConfirmMod
             )}
           </div>
 
+          {/* 手順 */}
+          {recipe.instructions && (
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-foreground">作り方</p>
+              <ol className="space-y-1.5">
+                {recipe.instructions.split("\n").map((step, i) => (
+                  <li key={i} className="text-sm text-muted-foreground">
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
           {/* 使用食材 */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-foreground">使用食材</p>
