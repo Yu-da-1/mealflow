@@ -116,6 +116,7 @@ import { RecipeCard } from "./RecipeCard";
 | `fix/`      | バグ修正         | `fix/expiry-date-calculation`        |
 | `chore/`    | 設定・環境整備   | `chore/project-init`                 |
 | `refactor/` | リファクタリング | `refactor/recipe-scoring-logic`      |
+| `test/`     | テスト追加       | `test/domain-recipe`                 |
 
 ### 命名ルール
 
