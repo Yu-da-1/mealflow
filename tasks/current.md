@@ -1,27 +1,25 @@
-## Phase 7-3: バリデーションのテスト
+## Phase 8-1: 食品マスタ拡充
 
-- ブランチ: `test/domain-validation`
+- ブランチ: `data/food-masters`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- 3つのバリデーション関数の正常系・各フィールドの異常系がテストされている
+- 食品マスタが 100件以上になっている
+- 肉類・魚介類に `parent_recipe_match_key` が設定されている
 - `pnpm vitest run` がパスする
 
 ### タスク
 
-- [x] `validateCreateInventoryLotInput`: 正常系・food_master_id 欠損・quantity が 0/小数/文字列・purchased_at の日付フォーマット不正・expiry_date の日付フォーマット不正
-- [x] `validateUpdateInventoryLotInput`: 正常系（各フィールド個別更新）・quantity が数値以外・expiry_type/expiry_source/status が不正値
-- [x] `validateConsumeFromRecipeInput`: 正常系・recipe_id 欠損・ingredient_keys が空配列・文字列以外の要素を含む
+- [x] 野菜類の追加（小松菜・白菜・ごぼう・さつまいも・かぼちゃ・アスパラ・豆苗・水菜・チンゲン菜 など）
+- [x] きのこ類の追加（えのき・エリンギ・まいたけ・なめこ など）
+- [x] 魚介類の追加（あじ・さば・いわし・えび・ほたて・あさり・たら・ぶり など）
+- [x] 乳製品・卵加工の追加（バター・チーズ・ヨーグルト・生クリーム など）
+- [x] 加工食品の追加（ちくわ・さつま揚げ・ハム・ベーコン・ソーセージ・豆乳 など）
+- [x] 肉類の `parent_recipe_match_key` 設定（chicken/pork/beef/fish）
 
 ### plan
 
-- 影響ファイル（新規作成）:
-  - `src/domain/inventory/__tests__/validateCreateInventoryLotInput.test.ts`
-  - `src/domain/inventory/__tests__/validateUpdateInventoryLotInput.test.ts`
-  - `src/domain/inventory/__tests__/validateConsumeFromRecipeInput.test.ts`
-- 実装順:
-  1. `validateCreateInventoryLotInput.test.ts`
-  2. `validateUpdateInventoryLotInput.test.ts`
-  3. `validateConsumeFromRecipeInput.test.ts`
-- 結果: 72件全パス（累計）
+- 影響ファイル:
+  - `supabase/seed.sql`（既存 36件の parent_recipe_match_key 更新 + 新規 64件追加 → 合計 100件）
+- 結果: 100件達成・テスト 72件全パス
