@@ -5,63 +5,74 @@
 
 ---
 
+## Phase 8: seed データ充実
 
-## Phase 7: ドメイン層ユニットテスト
-
-`src/domain/` の純粋関数に対するユニットテストを整備する。
-ロジックの正確性を担保し、リグレッションを防ぐ。
+アプリを実際に使える状態にするための食品マスタ・レシピデータを整備する。
 
 ---
 
-### Phase 7-1: レシピ関連ロジックのテスト
+### Phase 8-1: 食品マスタ拡充
 
-- ブランチ: `test/domain-recipe`
+- ブランチ: `data/food-masters`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- `scoreRecipe` / `matchRecipe` / `buildInventoryKeySet` / `buildRecommendReason` の全ケースがテストされている
+- 食品マスタが 100件以上になっている
+- 肉類・魚介類に `parent_recipe_match_key` が設定されている
 - `pnpm vitest run` がパスする
 
 #### タスク
 
-- [x] `scoreRecipe`: 期限切れ食材あり・なし・複数一致のスコア計算
-- [x] `matchRecipe`: 必須食材がすべて揃う・一部欠ける・任意食材のみのケース
-- [x] `buildInventoryKeySet`: `parent_recipe_match_key` の展開・期限当日/翌日の expiringKeys 判定・期限なしロット
-- [x] `buildRecommendReason`: 期限切れ食材あり（表示名あり/なし）・期限切れなし
+- [ ] 野菜類の追加（小松菜・白菜・ごぼう・さつまいも・かぼちゃ・アスパラ・豆苗・水菜・チンゲン菜 など）
+- [ ] きのこ類の追加（えのき・エリンギ・まいたけ・なめこ など）
+- [ ] 魚介類の追加（あじ・さば・いわし・えび・ほたて・あさり・たら・ぶり など）
+- [ ] 乳製品・卵加工の追加（バター・チーズ・ヨーグルト・生クリーム など）
+- [ ] 加工食品の追加（ちくわ・さつま揚げ・ハム・ベーコン・ソーセージ・豆乳 など）
+- [ ] 肉類の `parent_recipe_match_key` 設定（例: `chicken_thigh` / `chicken_breast` → `chicken`、`pork_belly` / `pork_loin` / `pork_bits` / `ground_pork` → `pork`、`ground_beef` → `beef`）
 
 ---
 
-### Phase 7-2: 在庫ロジックのテスト
+### Phase 8-2: レシピ instructions 追加・レシピ拡充
 
-- ブランチ: `test/domain-inventory`
+- ブランチ: `data/recipes`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- `computeConsumption` / `applyExpiryRule` / `buildInventorySummary` の全ケースがテストされている
+- 既存 35件のレシピすべてに `instructions` テキストが入っている
+- 食品マスタ拡充で追加された食材を使うレシピが追加されている（目安: 合計 50件前後）
 - `pnpm vitest run` がパスする
 
 #### タスク
 
-- [x] `computeConsumption`: 単一ロット消費・複数ロットの expiry_date 近い順優先・purchased_at 古い順優先・expiry_date null のロットが末尾・quantity=0 で consumed に遷移・`parent_recipe_match_key` 経由の一致
-- [x] `applyExpiryRule`: expiry_date 指定あり（manual）・なし（estimated・日数計算の正確性）
-- [x] `buildInventorySummary`: 複数ロットの合計数量・最近期限の選択・期限なしロットのみ
+- [ ] 既存 35件に `instructions` を追加（手順を 3〜5ステップで記述）
+- [ ] 魚介類を使った新規レシピを追加（さばの味噌煮・えびチリ・あさりの酒蒸し など）
+- [ ] 加工食品を使った新規レシピを追加（ベーコンと野菜のスープ・ソーセージ炒め など）
+- [ ] きのこ類を使った新規レシピを追加（えのきのバター炒め・きのこパスタ など）
 
 ---
 
-### Phase 7-3: バリデーションのテスト
+## Phase 9: CI 整備
 
-- ブランチ: `test/domain-validation`
+PR マージ前に型・lint・テストを自動チェックする GitHub Actions ワークフローを整備する。
+
+---
+
+### Phase 9-1: CI ワークフロー
+
+- ブランチ: `chore/ci`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- 3つのバリデーション関数の正常系・各フィールドの異常系がテストされている
-- `pnpm vitest run` がパスする
+- PR 作成・更新時に CI が自動で走る
+- tsc・lint・test のいずれかが失敗したら CI が red になる
 
 #### タスク
 
-- [x] `validateCreateInventoryLotInput`: 正常系・food_master_id 欠損・quantity が 0/小数/文字列・purchased_at の日付フォーマット不正・expiry_date の日付フォーマット不正
-- [x] `validateUpdateInventoryLotInput`: 正常系（各フィールド個別更新）・quantity が数値以外・expiry_type/expiry_source/status が不正値
-- [x] `validateConsumeFromRecipeInput`: 正常系・recipe_id 欠損・ingredient_keys が空配列・文字列以外の要素を含む
+- [ ] `.github/workflows/ci.yml` を作成
+- [ ] `pnpm tsc --noEmit`（型チェック）をジョブに追加
+- [ ] `pnpm eslint . --max-warnings 0`（lint）をジョブに追加
+- [ ] `pnpm vitest run`（テスト）をジョブに追加
+- [ ] トリガー: `pull_request`（main ブランチ向け）および `push`（main ブランチ）
