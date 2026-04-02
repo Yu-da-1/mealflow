@@ -25,10 +25,10 @@
 
 #### タスク
 
-- [ ] `scoreRecipe`: 期限切れ食材あり・なし・複数一致のスコア計算
-- [ ] `matchRecipe`: 必須食材がすべて揃う・一部欠ける・任意食材のみのケース
-- [ ] `buildInventoryKeySet`: `parent_recipe_match_key` の展開・期限当日/翌日の expiringKeys 判定・期限なしロット
-- [ ] `buildRecommendReason`: 期限切れ食材あり（表示名あり/なし）・期限切れなし
+- [x] `scoreRecipe`: 期限切れ食材あり・なし・複数一致のスコア計算
+- [x] `matchRecipe`: 必須食材がすべて揃う・一部欠ける・任意食材のみのケース
+- [x] `buildInventoryKeySet`: `parent_recipe_match_key` の展開・期限当日/翌日の expiringKeys 判定・期限なしロット
+- [x] `buildRecommendReason`: 期限切れ食材あり（表示名あり/なし）・期限切れなし
 
 ---
 
