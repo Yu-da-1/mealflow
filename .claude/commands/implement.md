@@ -97,7 +97,7 @@ quality-checker が完了報告を返したら次のステップへ進む。
 
 **tasks/backlog.md を更新する**
 
-- 完了したグループのタスクをすべて `[x]` にする
+- 完了したグループを backlog.md から**削除する**（完了済みの記録は git 履歴で確認できるため不要）
 
 **以下のいずれかに該当する場合は harness-improver を呼び出す**
 - quality-checker でループ検出が発生した
