@@ -62,6 +62,6 @@
 
 #### タスク
 
-- [ ] `validateCreateInventoryLotInput`: 正常系・food_master_id 欠損・quantity が 0/小数/文字列・purchased_at の日付フォーマット不正・expiry_date の日付フォーマット不正
-- [ ] `validateUpdateInventoryLotInput`: 正常系（各フィールド個別更新）・quantity が数値以外・expiry_type/expiry_source/status が不正値
-- [ ] `validateConsumeFromRecipeInput`: 正常系・recipe_id 欠損・ingredient_keys が空配列・文字列以外の要素を含む
+- [x] `validateCreateInventoryLotInput`: 正常系・food_master_id 欠損・quantity が 0/小数/文字列・purchased_at の日付フォーマット不正・expiry_date の日付フォーマット不正
+- [x] `validateUpdateInventoryLotInput`: 正常系（各フィールド個別更新）・quantity が数値以外・expiry_type/expiry_source/status が不正値
+- [x] `validateConsumeFromRecipeInput`: 正常系・recipe_id 欠損・ingredient_keys が空配列・文字列以外の要素を含む
