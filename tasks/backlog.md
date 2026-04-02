@@ -5,77 +5,63 @@
 
 ---
 
-## Phase 6: Claude API によるレシピ生成
 
-在庫食材を Claude API に渡し、手順付きレシピをリアルタイム生成する。
-設計の詳細は `docs/decisions/002-recipe-generation-with-claude-api.md` を参照。
+## Phase 7: ドメイン層ユニットテスト
 
----
-
-### ~~Phase 6-1: Claude API 統合・プロンプト設計・APIルート更新~~ ✅ 完了
-
-- ブランチ: `feature/claude-recipe-generation`
-- PR: #16 マージ済み
-
-#### タスク
-
-- [x] `@anthropic-ai/sdk` をインストール
-- [x] `ANTHROPIC_API_KEY` を `.env.local.example` に追加
-- [x] `src/server/repositories/claudeRecipeRepository.ts` を作成（Claude API 呼び出し）
-- [x] プロンプト設計（在庫食材 → 日本語レシピ3件・JSON形式で返す）
-- [x] `src/domain/recipe/generateRecipePrompt.ts` を作成（プロンプト組み立て純粋関数）
-- [x] `GET /api/recipes/recommended` を Claude 生成に切り替え
+`src/domain/` の純粋関数に対するユニットテストを整備する。
+ロジックの正確性を担保し、リグレッションを防ぐ。
 
 ---
 
-### Phase 6-2: キャッシュ戦略
+### Phase 7-1: レシピ関連ロジックのテスト
 
-- ブランチ: `feature/recipe-cache`
+- ブランチ: `test/domain-recipe`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- 在庫に変化がない場合は前回の生成結果を返す（API を呼ばない）
-- 在庫が変化したタイミングでキャッシュが無効化される
+- `scoreRecipe` / `matchRecipe` / `buildInventoryKeySet` / `buildRecommendReason` の全ケースがテストされている
+- `pnpm vitest run` がパスする
 
 #### タスク
 
-- [x] キャッシュの設計（在庫の変化検知方法を決める）
-- [x] キャッシュ実装（Next.js の `unstable_cache` またはDBへの保存）
-- [x] 在庫更新・追加・削除時にキャッシュを無効化する処理を追加
+- [ ] `scoreRecipe`: 期限切れ食材あり・なし・複数一致のスコア計算
+- [ ] `matchRecipe`: 必須食材がすべて揃う・一部欠ける・任意食材のみのケース
+- [ ] `buildInventoryKeySet`: `parent_recipe_match_key` の展開・期限当日/翌日の expiringKeys 判定・期限なしロット
+- [ ] `buildRecommendReason`: 期限切れ食材あり（表示名あり/なし）・期限切れなし
 
 ---
 
-### Phase 6-3: フォールバック・エラーハンドリング
+### Phase 7-2: 在庫ロジックのテスト
 
-- ブランチ: `feature/recipe-fallback`
+- ブランチ: `test/domain-inventory`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- Claude API がエラーを返した場合でもアプリが壊れない
-- フォールバック時はユーザーに適切なメッセージを表示する
+- `computeConsumption` / `applyExpiryRule` / `buildInventorySummary` の全ケースがテストされている
+- `pnpm vitest run` がパスする
 
 #### タスク
 
-- [x] Claude API タイムアウト・エラー時のフォールバック処理実装
-- [x] API レスポンスのバリデーション（Zod で JSON 構造を検証）
-- [x] エラー時の UI 表示（「レシピを取得できませんでした」+ 再試行ボタン）
+- [ ] `computeConsumption`: 単一ロット消費・複数ロットの expiry_date 近い順優先・purchased_at 古い順優先・expiry_date null のロットが末尾・quantity=0 で consumed に遷移・`parent_recipe_match_key` 経由の一致
+- [ ] `applyExpiryRule`: expiry_date 指定あり（manual）・なし（estimated・日数計算の正確性）
+- [ ] `buildInventorySummary`: 複数ロットの合計数量・最近期限の選択・期限なしロットのみ
 
 ---
 
-### Phase 6-4: UI 更新
+### Phase 7-3: バリデーションのテスト
 
-- ブランチ: `feature/recipe-ui-update`
+- ブランチ: `test/domain-validation`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- レシピ生成中はローディング表示される
-- 生成されたレシピの手順（instructions）がモーダル内に表示される
+- 3つのバリデーション関数の正常系・各フィールドの異常系がテストされている
+- `pnpm vitest run` がパスする
 
 #### タスク
 
-- [x] レシピ生成中のローディング UI（スケルトンまたはスピナー）
-- [x] レシピ詳細モーダルに手順（instructions）表示を追加
-- [x] 手順のステップ番号付き表示（1. 〜 2. 〜 の形式）
+- [ ] `validateCreateInventoryLotInput`: 正常系・food_master_id 欠損・quantity が 0/小数/文字列・purchased_at の日付フォーマット不正・expiry_date の日付フォーマット不正
+- [ ] `validateUpdateInventoryLotInput`: 正常系（各フィールド個別更新）・quantity が数値以外・expiry_type/expiry_source/status が不正値
+- [ ] `validateConsumeFromRecipeInput`: 正常系・recipe_id 欠損・ingredient_keys が空配列・文字列以外の要素を含む
