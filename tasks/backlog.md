@@ -44,9 +44,9 @@
 
 #### タスク
 
-- [ ] `computeConsumption`: 単一ロット消費・複数ロットの expiry_date 近い順優先・purchased_at 古い順優先・expiry_date null のロットが末尾・quantity=0 で consumed に遷移・`parent_recipe_match_key` 経由の一致
-- [ ] `applyExpiryRule`: expiry_date 指定あり（manual）・なし（estimated・日数計算の正確性）
-- [ ] `buildInventorySummary`: 複数ロットの合計数量・最近期限の選択・期限なしロットのみ
+- [x] `computeConsumption`: 単一ロット消費・複数ロットの expiry_date 近い順優先・purchased_at 古い順優先・expiry_date null のロットが末尾・quantity=0 で consumed に遷移・`parent_recipe_match_key` 経由の一致
+- [x] `applyExpiryRule`: expiry_date 指定あり（manual）・なし（estimated・日数計算の正確性）
+- [x] `buildInventorySummary`: 複数ロットの合計数量・最近期限の選択・期限なしロットのみ
 
 ---
 
