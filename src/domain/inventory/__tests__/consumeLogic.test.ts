@@ -4,7 +4,7 @@ import type { FoodMasterRow, InventoryLotRow } from "@/lib/types/database";
 
 // ---- shared fixtures ----
 
-const baseMaster = (overrides: Partial<FoodMasterRow>): FoodMasterRow => ({
+const baseMaster = (overrides: Partial<FoodMasterRow> = {}): FoodMasterRow => ({
   id: "fm-1",
   display_name: "卵",
   category: "dairy",
@@ -20,7 +20,7 @@ const baseMaster = (overrides: Partial<FoodMasterRow>): FoodMasterRow => ({
   ...overrides,
 });
 
-const baseLot = (overrides: Partial<InventoryLotRow>): InventoryLotRow => ({
+const baseLot = (overrides: Partial<InventoryLotRow> = {}): InventoryLotRow => ({
   id: "lot-1",
   food_master_id: "fm-1",
   quantity: 3,
@@ -70,8 +70,18 @@ describe("computeConsumption", () => {
 
   it("should prioritize lot with oldest purchased_at when expiry_date is equal", () => {
     const lots = [
-      baseLot({ id: "lot-new", food_master_id: "fm-1", expiry_date: "2024-01-15", purchased_at: "2024-01-05" }),
-      baseLot({ id: "lot-old", food_master_id: "fm-1", expiry_date: "2024-01-15", purchased_at: "2024-01-01" }),
+      baseLot({
+        id: "lot-new",
+        food_master_id: "fm-1",
+        expiry_date: "2024-01-15",
+        purchased_at: "2024-01-05",
+      }),
+      baseLot({
+        id: "lot-old",
+        food_master_id: "fm-1",
+        expiry_date: "2024-01-15",
+        purchased_at: "2024-01-01",
+      }),
     ];
     const masters = [baseMaster()];
 
@@ -96,7 +106,9 @@ describe("computeConsumption", () => {
 
   it("should match via parent_recipe_match_key", () => {
     const lots = [baseLot({ id: "lot-1", food_master_id: "fm-1", quantity: 2 })];
-    const masters = [baseMaster({ recipe_match_key: "chicken_thigh", parent_recipe_match_key: "chicken" })];
+    const masters = [
+      baseMaster({ recipe_match_key: "chicken_thigh", parent_recipe_match_key: "chicken" }),
+    ];
 
     const updates = computeConsumption(lots, masters, ["chicken"]);
 
@@ -115,7 +127,12 @@ describe("computeConsumption", () => {
   it("should skip lots with quantity 0", () => {
     const lots = [
       baseLot({ id: "lot-empty", food_master_id: "fm-1", quantity: 0, expiry_date: "2024-01-10" }),
-      baseLot({ id: "lot-available", food_master_id: "fm-1", quantity: 2, expiry_date: "2024-01-20" }),
+      baseLot({
+        id: "lot-available",
+        food_master_id: "fm-1",
+        quantity: 2,
+        expiry_date: "2024-01-20",
+      }),
     ];
     const masters = [baseMaster()];
 
@@ -138,7 +155,15 @@ describe("computeConsumption", () => {
     const updates = computeConsumption(lots, masters, ["egg", "milk"]);
 
     expect(updates).toHaveLength(2);
-    expect(updates.find((u) => u.id === "lot-egg")).toEqual({ id: "lot-egg", quantity: 1, status: "active" });
-    expect(updates.find((u) => u.id === "lot-milk")).toEqual({ id: "lot-milk", quantity: 0, status: "consumed" });
+    expect(updates.find((u) => u.id === "lot-egg")).toEqual({
+      id: "lot-egg",
+      quantity: 1,
+      status: "active",
+    });
+    expect(updates.find((u) => u.id === "lot-milk")).toEqual({
+      id: "lot-milk",
+      quantity: 0,
+      status: "consumed",
+    });
   });
 });
