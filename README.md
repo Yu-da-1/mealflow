@@ -23,12 +23,12 @@
 
 ### 技術スタック
 
-| 分類 | 技術 |
-|------|------|
+| 分類           | 技術                                 |
+| -------------- | ------------------------------------ |
 | フレームワーク | Next.js 16 (App Router) + TypeScript |
-| スタイリング | Tailwind CSS v4 |
-| バックエンド | Supabase (PostgreSQL) |
-| テスト | Vitest |
+| スタイリング   | Tailwind CSS v4                      |
+| バックエンド   | Supabase (PostgreSQL)                |
+| テスト         | Vitest                               |
 
 ---
 

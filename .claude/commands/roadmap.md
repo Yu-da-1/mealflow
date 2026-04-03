@@ -23,6 +23,7 @@
 
 - `tasks/backlog.md`: 完了済み・未着手のPhaseを把握する
 - `docs/design.md`: MVPスコープと将来対応を確認する
+- `docs/competitive-analysis/index.md`: 存在する場合、競合分析の示唆を参照する（なければスキップ）
 - 必要に応じて `src/` を探索し、実装済みの範囲を確認する
 
 整理した内容をユーザーに見せる。

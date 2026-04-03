@@ -97,7 +97,12 @@ describe("validateCreateInventoryLotInput", () => {
   });
 
   it("should return invalid when expiry_date has invalid date format", () => {
-    const body = { food_master_id: "fm-1", quantity: 1, purchased_at: "2024-01-01", expiry_date: "not-a-date" };
+    const body = {
+      food_master_id: "fm-1",
+      quantity: 1,
+      purchased_at: "2024-01-01",
+      expiry_date: "not-a-date",
+    };
 
     const result = validateCreateInventoryLotInput(body);
 

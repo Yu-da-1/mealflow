@@ -95,11 +95,13 @@ quality-checker が完了報告を返したら次のステップへ進む。
 - 完了タスクの `- [ ]` を `- [x]` に変える
 - planに結果メモを追記する（想定外のことがあれば）
 
-**tasks/backlog.md を更新する**
+**tasks/backlog.md は基本的に触らない**
 
-- 完了したグループを backlog.md から**削除する**（完了済みの記録は git 履歴で確認できるため不要）
+- backlog.md の削除は、フェーズ全体の計画を新たに立てるタイミング（新フェーズ追加・backlog 再計画時）に行う
+- 個々のグループ完了時には削除しない
 
 **以下のいずれかに該当する場合は harness-improver を呼び出す**
+
 - quality-checker でループ検出が発生した
 - git 操作（checkout・pull・push など）で想定外のエラーや stash / conflict が発生した
 - ワークフローの手順通りに進めたのに回避策（stash・cherry-pick など）が必要になった

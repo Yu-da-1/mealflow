@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { applyExpiryRule } from "../expiryRules";
 import type { FoodMasterRow } from "@/lib/types/database";
 
-const baseMaster = (overrides: Partial<Pick<FoodMasterRow, "default_expiry_type" | "default_expiry_days">>) => ({
+const baseMaster = (
+  overrides: Partial<Pick<FoodMasterRow, "default_expiry_type" | "default_expiry_days">>,
+) => ({
   default_expiry_type: "best_before" as const,
   default_expiry_days: 7,
   ...overrides,
