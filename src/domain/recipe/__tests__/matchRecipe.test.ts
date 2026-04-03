@@ -5,7 +5,7 @@ import type { RecipeWithIngredients } from "@/lib/types/ui";
 
 // ---- shared fixtures ----
 
-const baseMaster = (overrides: Partial<FoodMasterRow>): FoodMasterRow => ({
+const baseMaster = (overrides: Partial<FoodMasterRow> = {}): FoodMasterRow => ({
   id: "fm-1",
   display_name: "卵",
   category: "dairy",
@@ -21,7 +21,7 @@ const baseMaster = (overrides: Partial<FoodMasterRow>): FoodMasterRow => ({
   ...overrides,
 });
 
-const baseLot = (overrides: Partial<InventoryLotRow>): InventoryLotRow => ({
+const baseLot = (overrides: Partial<InventoryLotRow> = {}): InventoryLotRow => ({
   id: "lot-1",
   food_master_id: "fm-1",
   quantity: 3,
@@ -35,9 +35,7 @@ const baseLot = (overrides: Partial<InventoryLotRow>): InventoryLotRow => ({
   ...overrides,
 });
 
-const makeRecipe = (
-  ingredients: { key: string; required: boolean }[],
-): RecipeWithIngredients =>
+const makeRecipe = (ingredients: { key: string; required: boolean }[]): RecipeWithIngredients =>
   ({
     id: "r1",
     ingredients: ingredients.map(({ key, required }) => ({
@@ -60,7 +58,9 @@ describe("buildInventoryKeySet", () => {
 
   it("should also add parent_recipe_match_key to availableKeys when present", () => {
     const lots = [baseLot()];
-    const masters = [baseMaster({ recipe_match_key: "chicken_thigh", parent_recipe_match_key: "chicken" })];
+    const masters = [
+      baseMaster({ recipe_match_key: "chicken_thigh", parent_recipe_match_key: "chicken" }),
+    ];
 
     const { availableKeys } = buildInventoryKeySet(lots, masters, "2024-01-01");
 
@@ -111,7 +111,9 @@ describe("buildInventoryKeySet", () => {
   it("should also add parent_recipe_match_key to expiringKeys when ingredient is expiring", () => {
     const today = "2024-01-10";
     const lots = [baseLot({ expiry_date: today })];
-    const masters = [baseMaster({ recipe_match_key: "chicken_thigh", parent_recipe_match_key: "chicken" })];
+    const masters = [
+      baseMaster({ recipe_match_key: "chicken_thigh", parent_recipe_match_key: "chicken" }),
+    ];
 
     const { expiringKeys } = buildInventoryKeySet(lots, masters, today);
 

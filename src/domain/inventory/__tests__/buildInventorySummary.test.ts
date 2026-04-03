@@ -4,7 +4,7 @@ import type { FoodMasterRow, InventoryLotRow } from "@/lib/types/database";
 
 // ---- shared fixtures ----
 
-const baseMaster = (overrides: Partial<FoodMasterRow>): FoodMasterRow => ({
+const baseMaster = (overrides: Partial<FoodMasterRow> = {}): FoodMasterRow => ({
   id: "fm-1",
   display_name: "卵",
   category: "dairy",
@@ -38,10 +38,7 @@ const baseLot = (overrides: Partial<InventoryLotRow>): InventoryLotRow => ({
 
 describe("buildInventorySummary", () => {
   it("should sum quantities across multiple lots of the same food", () => {
-    const lots = [
-      baseLot({ id: "lot-1", quantity: 3 }),
-      baseLot({ id: "lot-2", quantity: 5 }),
-    ];
+    const lots = [baseLot({ id: "lot-1", quantity: 3 }), baseLot({ id: "lot-2", quantity: 5 })];
     const masters = [baseMaster()];
 
     const summary = buildInventorySummary(lots, masters);
