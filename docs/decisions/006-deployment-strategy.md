@@ -1,0 +1,39 @@
+# 006: デプロイ戦略（ホスティング・環境構成）
+
+## 決定内容
+
+- ホスティング: **Vercel（Hobby プラン、無料）**
+- DB: **Supabase Free（1プロジェクト）**
+- 環境構成: **local + production の2環境のみ**
+- 月額コスト: **$0**
+
+## 理由
+
+### Vercel を選んだ理由
+
+Next.js App Router との相性がネイティブレベルで最も良い。設定がほぼゼロで動き、PRごとのプレビューデプロイも自動生成される。Supabaseとの連携実績も豊富。
+
+比較した選択肢：
+- Netlify: App Router対応はあるが設定が必要。Vercelより劣る
+- Cloudflare Pages: 無料枠は広いが App Router の一部機能に制限あり
+- Railway: Next.js対応はあるが無料枠がなく月$5〜かかる
+
+### staging 環境を作らなかった理由
+
+個人開発かつ自分が唯一のユーザーである現段階では、staging の恩恵（本番に近い環境での確認）より管理コストが上回る。CI（型・lint・テスト）が通ればprodに直接デプロイしても壊れるリスクは低い。
+
+チーム開発になる・外部ユーザーへの公開前に確認が必要になるタイミングで追加する。
+
+### 無料プランで十分と判断した理由
+
+個人開発・MVP段階ではトラフィックもDB容量も無料枠（Vercel: 関数実行4時間/月、Supabase: 500MB）を超える見込みがない。
+
+## 却下した選択肢
+
+| 選択肢 | 却下理由 |
+|---|---|
+| Netlify | App Router との相性がVercelより劣る |
+| Cloudflare Pages | App Router の機能制限あり |
+| Railway | 無料枠なし（$5/月〜） |
+| local + staging + production の3環境 | 個人開発では管理コストが高すぎる |
+| Vercel Pro（$20/月） | 個人開発・MVP段階では不要 |
