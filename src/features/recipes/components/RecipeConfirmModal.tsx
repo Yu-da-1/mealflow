@@ -149,9 +149,7 @@ export function RecipeConfirmModal({ recipe, reason, onClose }: RecipeConfirmMod
             )}
           </div>
 
-          {error && (
-            <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>
-          )}
+          {error && <p className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
 
           {/* アクション */}
           <div className="flex justify-end gap-2 pt-2 border-t border-border">
