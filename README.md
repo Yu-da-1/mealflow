@@ -52,7 +52,7 @@ pnpm install
 
 # 3. 環境変数を設定
 cp .env.local.example .env.local
-# .env.local に Supabase の URL と anon key を記入
+# .env.local に各値を記入（Supabase の URL・anon key、Anthropic API key）
 
 # 4. Supabase にスキーマとシードデータを投入
 # Supabase Dashboard > SQL Editor で以下を実行:
@@ -66,8 +66,9 @@ pnpm dev
 ### 環境変数
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 
 ---
@@ -200,6 +201,26 @@ Plan を書かずに実装を始めないことが重要で、`tasks/current.md`
 
 `docs/schema.md` の SQL を読んで Supabase にマイグレーションを実行する手順を定義したコマンド。ファイル名の命名規則（`YYYYMMDDHHMMSS_説明.sql`）を明示することで、Claude Code が自己判断で変な名前をつけるのを防いでいます。
 
+#### `/security-review`
+
+セキュリティ観点でコードを審査するコマンド。OWASP Top 10 や Supabase の RLS 設定漏れ、API キーの露出などを確認します。**問題があれば修正まで行います。**
+
+#### `/security-fix`
+
+`/security-review` で検出した問題を修正するコマンド。修正後に再度 security-review を実行して問題がなくなったことを確認します。
+
+#### `/plan-next`
+
+`docs/roadmap.md` の内容をもとに次のフェーズを選び、`tasks/backlog.md` に追記するコマンド。**実装は行わず**、roadmap → backlog の移動だけを担います。
+
+#### `/roadmap`
+
+長期的な方向性を議論し、`docs/roadmap.md` に記録するコマンド。**実装・backlog への追記は行わず**、長期計画の議論と記録のためだけに使います。backlog への移動は `/plan-next` で行います。
+
+#### `/competitive-analysis`
+
+競合アプリの機能比較・ユーザーニーズ・ギャップ分析を行い、`docs/competitive-analysis/index.md` に保存するコマンド。**実装は行いません。**
+
 ---
 
 ### .claude/agents/ — サブエージェント
@@ -218,3 +239,7 @@ lint・型チェック・テストをすべてグリーンにする担当。`/im
 #### code-reviewer
 
 アーキテクチャ・コード品質・仕様との照合を確認し、問題があれば修正まで行う担当。PR 作成前に呼び出されます。チェック観点は `/review` コマンドと同一です。
+
+#### harness-improver
+
+ワークフロー自体の不備を修正する担当。quality-checker のループ検出・git 操作エラー・手順の不備・想定外のハマりが発生したとき、またはユーザーからフィードバックを受けたときに呼び出されます。`/implement` などのコマンドファイルや `settings.json` を直接修正します。
