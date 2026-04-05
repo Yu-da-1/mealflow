@@ -1,10 +1,16 @@
-import { supabase } from "@/server/supabase";
+import { getSupabase } from "@/server/supabase";
 
 import type { RecipeIngredientRow, RecipeRow } from "@/lib/types/database";
 import type { RecipeWithIngredients } from "@/lib/types/ui";
 
+/**
+ * 指定IDのレシピを食材込みで取得する
+ *
+ * @param id - レシピのID
+ * @returns レシピと食材一覧。存在しない場合は null
+ */
 export const getRecipeById = async (id: string): Promise<RecipeWithIngredients | null> => {
-  const { data: recipe, error: recipeError } = await supabase
+  const { data: recipe, error: recipeError } = await getSupabase()
     .from("recipes")
     .select("*")
     .eq("id", id)
@@ -13,7 +19,7 @@ export const getRecipeById = async (id: string): Promise<RecipeWithIngredients |
   if (recipeError) throw recipeError;
   if (!recipe) return null;
 
-  const { data: ingredients, error: ingredientsError } = await supabase
+  const { data: ingredients, error: ingredientsError } = await getSupabase()
     .from("recipe_ingredients")
     .select("*")
     .eq("recipe_id", id);
@@ -23,8 +29,13 @@ export const getRecipeById = async (id: string): Promise<RecipeWithIngredients |
   return { ...(recipe as RecipeRow), ingredients: ingredients as RecipeIngredientRow[] };
 };
 
+/**
+ * 有効なレシピをすべて食材込みで取得する
+ *
+ * @returns is_active が true のレシピと食材一覧
+ */
 export const getActiveRecipesWithIngredients = async (): Promise<RecipeWithIngredients[]> => {
-  const { data: recipes, error: recipesError } = await supabase
+  const { data: recipes, error: recipesError } = await getSupabase()
     .from("recipes")
     .select("*")
     .eq("is_active", true);
@@ -34,7 +45,7 @@ export const getActiveRecipesWithIngredients = async (): Promise<RecipeWithIngre
   const recipeIds = (recipes as RecipeRow[]).map((r) => r.id);
   if (recipeIds.length === 0) return [];
 
-  const { data: ingredients, error: ingredientsError } = await supabase
+  const { data: ingredients, error: ingredientsError } = await getSupabase()
     .from("recipe_ingredients")
     .select("*")
     .in("recipe_id", recipeIds);
@@ -54,12 +65,18 @@ export const getActiveRecipesWithIngredients = async (): Promise<RecipeWithIngre
   }));
 };
 
+/**
+ * 指定日数以内に提案されたレシピのIDリストを取得する
+ *
+ * @param days - 遡る日数（デフォルト: 3日）
+ * @returns 重複を除いたレシピIDリスト
+ */
 export const getRecentlyRecommendedRecipeIds = async (days: number = 3): Promise<string[]> => {
   const since = new Date();
   since.setDate(since.getDate() - days);
   const sinceStr = since.toISOString().slice(0, 10);
 
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from("recipe_recommendation_logs")
     .select("recipe_id")
     .gte("recommended_on", sinceStr);
@@ -68,11 +85,17 @@ export const getRecentlyRecommendedRecipeIds = async (days: number = 3): Promise
   return [...new Set((data as { recipe_id: string }[]).map((r) => r.recipe_id))];
 };
 
+/**
+ * 指定日数以内に提案されたレシピのタイトル一覧を取得する
+ *
+ * @param days - 遡る日数（デフォルト: 3日）
+ * @returns 重複提案を避けるためのタイトルリスト
+ */
 export const getRecentlyRecommendedTitles = async (days: number = 3): Promise<string[]> => {
   const recentIds = await getRecentlyRecommendedRecipeIds(days);
   if (recentIds.length === 0) return [];
 
-  const { data, error } = await supabase.from("recipes").select("title").in("id", recentIds);
+  const { data, error } = await getSupabase().from("recipes").select("title").in("id", recentIds);
 
   if (error) throw error;
   return (data as { title: string }[]).map((r) => r.title);
@@ -85,7 +108,7 @@ export const getRecentlyRecommendedTitles = async (days: number = 3): Promise<st
  */
 export const createRecommendationLog = async (recipeId: string): Promise<void> => {
   const today = new Date().toISOString().slice(0, 10);
-  const { error } = await supabase
+  const { error } = await getSupabase()
     .from("recipe_recommendation_logs")
     .insert({ recipe_id: recipeId, recommended_on: today });
 

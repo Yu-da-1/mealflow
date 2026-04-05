@@ -6,7 +6,7 @@ import {
   type ClaudeGeneratedRecipe,
   type IngredientForPrompt,
 } from "@/domain/recipe/generateRecipePrompt";
-import { supabase } from "@/server/supabase";
+import { getSupabase } from "@/server/supabase";
 import type { RecipeRow } from "@/lib/types/database";
 
 const CLAUDE_MODEL = "claude-haiku-4-5";
@@ -30,7 +30,7 @@ const parseClaudeResponse = (text: string): ClaudeGeneratedRecipe[] => {
 };
 
 const saveRecipeToDb = async (recipe: ClaudeGeneratedRecipe): Promise<SavedRecipe> => {
-  const { data: recipeRow, error: recipeError } = await supabase
+  const { data: recipeRow, error: recipeError } = await getSupabase()
     .from("recipes")
     .insert({
       title: recipe.title,
@@ -47,13 +47,15 @@ const saveRecipeToDb = async (recipe: ClaudeGeneratedRecipe): Promise<SavedRecip
   }
 
   if (recipe.ingredients.length > 0) {
-    const { error: ingError } = await supabase.from("recipe_ingredients").insert(
-      recipe.ingredients.map((ing) => ({
-        recipe_id: (recipeRow as RecipeRow).id,
-        recipe_match_key: ing.recipe_match_key,
-        is_required: ing.is_required,
-      })),
-    );
+    const { error: ingError } = await getSupabase()
+      .from("recipe_ingredients")
+      .insert(
+        recipe.ingredients.map((ing) => ({
+          recipe_id: (recipeRow as RecipeRow).id,
+          recipe_match_key: ing.recipe_match_key,
+          is_required: ing.is_required,
+        })),
+      );
     if (ingError) throw new Error(`Failed to save ingredients: ${ingError.message}`);
   }
 
@@ -67,6 +69,14 @@ const saveRecipeToDb = async (recipe: ClaudeGeneratedRecipe): Promise<SavedRecip
   };
 };
 
+/**
+ * Claude API でレシピを生成し、DB に保存する
+ *
+ * @param ingredients - プロンプトに渡す在庫食材の一覧
+ * @param recentTitles - 重複提案を避けるための最近のレシピタイトル一覧
+ * @param count - 生成するレシピ件数
+ * @returns 保存されたレシピの一覧
+ */
 export const generateAndSaveRecipes = async (
   ingredients: IngredientForPrompt[],
   recentTitles: string[],
