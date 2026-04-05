@@ -43,11 +43,11 @@
 - [x] `docs/env.md` を作成
 
 #### 手動作業（ユーザーが実施）
-- [ ] Supabase で production プロジェクトを作成
-- [ ] SQL Editor で初回マイグレーションを適用（または `supabase db push` を手動実行）
-- [ ] `supabase/seed.sql` を SQL Editor で実行（初期データ投入）
-- [ ] GitHub Secrets に `SUPABASE_ACCESS_TOKEN` と `SUPABASE_PROJECT_REF` を登録
-- [ ] Vercel に環境変数を登録（`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `ANTHROPIC_API_KEY`）
+- [x] Supabase で production プロジェクトを作成
+- [x] SQL Editor で初回マイグレーションを適用（または `supabase db push` を手動実行）
+- [x] `supabase/seed.sql` を SQL Editor で実行（初期データ投入）
+- [x] GitHub Secrets に `SUPABASE_ACCESS_TOKEN` と `SUPABASE_PROJECT_REF` を登録
+- [x] Vercel に環境変数を登録（`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `ANTHROPIC_API_KEY`）
 - [ ] 本番デプロイ後、主要機能（在庫一覧・レシピ提案）の動作確認
 
 ### plan
