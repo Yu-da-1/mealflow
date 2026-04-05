@@ -1,3 +1,6 @@
+// DBを参照するためビルド時の静的プリレンダリングを無効化する
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 

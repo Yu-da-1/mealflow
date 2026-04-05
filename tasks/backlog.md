@@ -5,26 +5,46 @@
 
 ---
 
-## Phase 9: CI 整備
+## Phase 10: デプロイ基盤整備
 
-PR マージ前に型・lint・テストを自動チェックする GitHub Actions ワークフローを整備する。
+Vercel + Supabase による本番環境を構築し、「実際に触れるアプリ」にする。
 
 ---
 
-### Phase 9-1: CI ワークフロー
+### Phase 10-1: Vercel デプロイ設定
 
-- ブランチ: `chore/ci`
+- ブランチ: `chore/vercel-deploy`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- PR 作成・更新時に CI が自動で走る
-- tsc・lint・test のいずれかが失敗したら CI が red になる
+- main push → Vercel production へ自動デプロイされる
+- PR 作成 → Vercel Preview デプロイが生成される
 
 #### タスク
 
-- [ ] `.github/workflows/ci.yml` を作成
-- [ ] `pnpm tsc --noEmit`（型チェック）をジョブに追加
-- [ ] `pnpm eslint . --max-warnings 0`（lint）をジョブに追加
-- [ ] `pnpm vitest run`（テスト）をジョブに追加
-- [ ] トリガー: `pull_request`（main ブランチ向け）および `push`（main ブランチ）
+- [ ] Vercel プロジェクトを作成し GitHub リポジトリと連携
+- [ ] `vercel.json` を作成（必要な場合）
+- [ ] Vercel ダッシュボードで production ブランチを `main` に設定
+- [ ] デプロイが正常に完了することを確認
+
+---
+
+### Phase 10-2: Supabase production 環境構築 & 環境変数管理
+
+- ブランチ: `chore/supabase-production`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- production 用 Supabase プロジェクトにスキーマが適用されている
+- Vercel の環境変数に本番用の値が登録されており、デプロイ済みアプリが動作する
+- `.env.local`（開発）と Vercel 環境変数（本番）の対応がドキュメント化されている
+
+#### タスク
+
+- [ ] Supabase で production 用プロジェクトを作成
+- [ ] マイグレーション（スキーマ）を production に適用
+- [ ] Vercel に環境変数を登録（`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `ANTHROPIC_API_KEY` 等）
+- [ ] `docs/env.md` を作成し、環境変数の一覧と local/production の対応を記載
+- [ ] 本番デプロイ後、アプリの主要機能（在庫一覧・レシピ提案）が動作することを確認
