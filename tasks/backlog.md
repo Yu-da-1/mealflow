@@ -5,50 +5,31 @@
 
 ---
 
-## Phase 10: デプロイ基盤整備
+## Phase 11: 食品マスタ拡充
 
-Vercel + Supabase による本番環境を構築し、「実際に触れるアプリ」にする。
+オートコンプリートのヒット率を上げ、バーコードスキャン導入前の準備として食品マスタを100件→300件程度に増やす。
+category / recipe_match_key / default_expiry_days の精度も合わせて整備する。
 
 ---
 
-### Phase 10-1: Vercel デプロイ設定
+### Phase 11-1: 食品マスタデータ追加（野菜・肉・魚介・乳製品）
 
-- ブランチ: `chore/vercel-deploy`
+- ブランチ: `chore/food-master-expansion`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- main push → Vercel production へ自動デプロイされる
-- PR 作成 → Vercel Preview デプロイが生成される
+- `supabase/seed.sql` の food_masters が 300 件以上になっている
+- 追加データに category / subcategory / recipe_match_key / default_expiry_days がすべて設定されている
+- ローカル DB に `supabase db reset` を実行してエラーなく適用できる
+- オートコンプリートで主要食材（野菜・肉・魚介・乳製品・調味料・缶詰）が検索できる
 
 #### タスク
 
-- [ ] Vercel プロジェクトを作成し GitHub リポジトリと連携
-- [ ] `vercel.json` を作成（必要な場合）
-- [ ] Vercel ダッシュボードで production ブランチを `main` に設定
-- [ ] デプロイが正常に完了することを確認
-
----
-
-### Phase 10-2: Supabase production 環境構築 & マイグレーション自動化
-
-- ブランチ: `chore/supabase-production`
-- PR: このグループ完了後に1PR
-
-#### 完了条件
-
-- `supabase/migrations/` でスキーマがバージョン管理されている
-- `main` マージ時に GitHub Actions が自動で `supabase db push` を実行する
-- production 用 Supabase プロジェクトにスキーマが適用されている
-- Vercel の環境変数に本番用の値が登録されており、デプロイ済みアプリが動作する
-- `docs/env.md` に環境変数の一覧と local/production の対応が記載されている
-
-#### タスク
-
-- [ ] `supabase/migrations/20260405000000_init.sql` を作成
-- [ ] `.github/workflows/ci.yml` に migrate ジョブを追加
-- [ ] `docs/env.md` を作成
-- [ ] Supabase で production プロジェクトを作成（手動）
-- [ ] GitHub Secrets に `SUPABASE_ACCESS_TOKEN` と `SUPABASE_PROJECT_REF` を登録（手動）
-- [ ] Vercel に環境変数を登録（手動）
-- [ ] 本番デプロイ後、主要機能の動作確認
+- [ ] 野菜類を追加（葉物・根菜・きのこ・豆類など）
+- [ ] 肉類・加工肉を追加（牛・豚・ひき肉・ソーセージ・ベーコンなど）
+- [ ] 魚介類を追加（切り身・刺身・干物・缶詰など）
+- [ ] 乳製品・卵類を追加（チーズ・バター・ヨーグルトなど）
+- [ ] 調味料・ソース類を追加（醤油・みそ・ケチャップ・ドレッシングなど）
+- [ ] 穀物・パン・麺類を追加（米・パスタ・うどん・そばなど）
+- [ ] `supabase db reset` でエラーなく適用されることを確認
