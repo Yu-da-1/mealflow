@@ -1,8 +1,8 @@
 -- ============================================================
--- Food master seed data (36 items)
+-- Food master seed data (36 items, part 1 of 3)
 -- ============================================================
 INSERT INTO food_masters (display_name, category, subcategory, recipe_match_key, parent_recipe_match_key, default_expiry_type, default_expiry_days, aliases, is_active) VALUES
-  ('卵',         '野菜・卵',   NULL,       'egg',            NULL, 'best_before', 14,  '{}', true),
+  ('卵',         '野菜',       NULL,       'egg',            NULL, 'best_before', 14,  '{}', true),
   ('牛乳',       '乳製品',     NULL,       'milk',           NULL, 'best_before',  7,  '{}', true),
   ('豆腐',       '大豆製品',   NULL,       'tofu',           NULL, 'use_by',       5,  '{}', true),
   ('鶏もも肉',   '肉類',       '鶏肉',     'chicken_thigh',  'chicken', 'use_by',       3,  '{}', true),
@@ -40,7 +40,7 @@ INSERT INTO food_masters (display_name, category, subcategory, recipe_match_key,
   ('豚こま切れ肉','肉類',      '豚肉',     'pork_bits',      'pork',    'use_by',       3,  '{}', true);
 
 -- ============================================================
--- Food master seed data (additional 64 items → total 100)
+-- Food master seed data (additional 64 items → total 100, part 2 of 3)
 -- ============================================================
 INSERT INTO food_masters (display_name, category, subcategory, recipe_match_key, parent_recipe_match_key, default_expiry_type, default_expiry_days, aliases, is_active) VALUES
   -- 肉類追加
@@ -117,6 +117,250 @@ INSERT INTO food_masters (display_name, category, subcategory, recipe_match_key,
   -- 果物・その他
   ('レモン',         '果物',     NULL,       'lemon',                NULL,       'best_before',  14,  '{}', true),
   ('アボカド',       '果物',     NULL,       'avocado',              NULL,       'best_before',  3,   '{}', true);
+
+-- ============================================================
+-- Food master seed data (additional 200 items → total 300, part 3 of 3)
+-- ============================================================
+INSERT INTO food_masters (display_name, category, subcategory, recipe_match_key, parent_recipe_match_key, default_expiry_type, default_expiry_days, aliases, is_active) VALUES
+
+  -- ▼ 調味料・ソース類 (35 items)
+  ('醤油',               '調味料',   NULL,       'soy_sauce',            NULL,       'best_before',  540, '{}', true),
+  ('薄口醤油',           '調味料',   NULL,       'light_soy_sauce',      NULL,       'best_before',  540, '{}', true),
+  ('みそ（赤）',         '調味料',   NULL,       'red_miso',             'miso',     'best_before',  365, '{}', true),
+  ('みそ（白）',         '調味料',   NULL,       'white_miso',           'miso',     'best_before',  365, '{}', true),
+  ('合わせみそ',         '調味料',   NULL,       'blended_miso',         'miso',     'best_before',  365, '{}', true),
+  ('みりん',             '調味料',   NULL,       'mirin',                NULL,       'best_before',  730, '{}', true),
+  ('料理酒',             '調味料',   NULL,       'cooking_sake',         NULL,       'best_before',  365, '{}', true),
+  ('酢',                 '調味料',   NULL,       'vinegar',              NULL,       'best_before',  730, '{}', true),
+  ('砂糖',               '調味料',   NULL,       'sugar',                NULL,       'best_before',  1825,'{}', true),
+  ('塩',                 '調味料',   NULL,       'salt',                 NULL,       'best_before',  1825,'{}', true),
+  ('サラダ油',           '調味料',   '油',       'salad_oil',            'oil',      'best_before',  365, '{}', true),
+  ('ごま油',             '調味料',   '油',       'sesame_oil',           'oil',      'best_before',  365, '{}', true),
+  ('オリーブオイル',     '調味料',   '油',       'olive_oil',            'oil',      'best_before',  365, '{}', true),
+  ('ポン酢',             '調味料',   NULL,       'ponzu',                NULL,       'best_before',  180, '{}', true),
+  ('めんつゆ',           '調味料',   NULL,       'mentsuyu',             NULL,       'best_before',  365, '{}', true),
+  ('マヨネーズ',         '調味料',   NULL,       'mayonnaise',           NULL,       'best_before',  270, '{}', true),
+  ('ケチャップ',         '調味料',   NULL,       'ketchup',              NULL,       'best_before',  270, '{}', true),
+  ('ウスターソース',     '調味料',   NULL,       'worcestershire_sauce', NULL,       'best_before',  365, '{}', true),
+  ('中濃ソース',         '調味料',   NULL,       'tonkatsu_sauce',       NULL,       'best_before',  365, '{}', true),
+  ('豆板醤',             '調味料',   NULL,       'doubanjiang',          NULL,       'best_before',  365, '{}', true),
+  ('オイスターソース',   '調味料',   NULL,       'oyster_sauce',         NULL,       'best_before',  365, '{}', true),
+  ('鶏がらスープの素',   '調味料',   NULL,       'chicken_stock_powder', NULL,       'best_before',  730, '{}', true),
+  ('コンソメ（顆粒）',   '調味料',   NULL,       'consomme',             NULL,       'best_before',  730, '{}', true),
+  ('和風だしの素',       '調味料',   NULL,       'dashi_powder',         NULL,       'best_before',  730, '{}', true),
+  ('カレー粉',           '調味料',   'スパイス', 'curry_powder',         NULL,       'best_before',  730, '{}', true),
+  ('カレールー',         '調味料',   NULL,       'curry_roux',           NULL,       'best_before',  730, '{}', true),
+  ('白だし',             '調味料',   NULL,       'white_dashi',          NULL,       'best_before',  180, '{}', true),
+  ('焼肉のタレ',         '調味料',   NULL,       'yakiniku_sauce',       NULL,       'best_before',  365, '{}', true),
+  ('にんにくチューブ',   '調味料',   NULL,       'garlic_tube',          NULL,       'best_before',  90,  '{}', true),
+  ('しょうがチューブ',   '調味料',   NULL,       'ginger_tube',          NULL,       'best_before',  90,  '{}', true),
+  ('からし',             '調味料',   NULL,       'mustard',              NULL,       'best_before',  180, '{}', true),
+  ('甜麺醤',             '調味料',   NULL,       'tian_mian_jiang',      NULL,       'best_before',  365, '{}', true),
+  ('ナンプラー',         '調味料',   NULL,       'fish_sauce',           NULL,       'best_before',  730, '{}', true),
+  ('塩麹',               '調味料',   NULL,       'shio_koji',            NULL,       'best_before',  180, '{}', true),
+  ('ラー油',             '調味料',   '油',       'chili_oil',            'oil',      'best_before',  365, '{}', true),
+
+  -- ▼ 乾物・粉類 (18 items)
+  ('薄力粉',             '粉類',     NULL,       'cake_flour',           'flour',    'best_before',  365, '{}', true),
+  ('強力粉',             '粉類',     NULL,       'bread_flour',          'flour',    'best_before',  365, '{}', true),
+  ('片栗粉',             '粉類',     NULL,       'starch',               NULL,       'best_before',  730, '{}', true),
+  ('コーンスターチ',     '粉類',     NULL,       'corn_starch',          NULL,       'best_before',  730, '{}', true),
+  ('パン粉',             '粉類',     NULL,       'bread_crumbs',         NULL,       'best_before',  180, '{}', true),
+  ('かつお節',           '乾物',     NULL,       'bonito_flakes',        NULL,       'best_before',  180, '{}', true),
+  ('昆布',               '乾物',     '海藻',     'konbu',                NULL,       'best_before',  730, '{}', true),
+  ('乾燥わかめ',         '乾物',     '海藻',     'dried_wakame',         NULL,       'best_before',  730, '{}', true),
+  ('焼きのり',           '乾物',     '海藻',     'nori',                 NULL,       'best_before',  180, '{}', true),
+  ('刻みのり',           '乾物',     '海藻',     'shredded_nori',        NULL,       'best_before',  90,  '{}', true),
+  ('白ごま',             '乾物',     NULL,       'white_sesame',         'sesame',   'best_before',  365, '{}', true),
+  ('黒ごま',             '乾物',     NULL,       'black_sesame',         'sesame',   'best_before',  365, '{}', true),
+  ('練りごま',           '乾物',     NULL,       'sesame_paste',         'sesame',   'best_before',  365, '{}', true),
+  ('干しシイタケ',       '乾物',     'きのこ',   'dried_shiitake',       NULL,       'best_before',  365, '{}', true),
+  ('乾燥桜えび',         '乾物',     NULL,       'dried_sakura_shrimp',  NULL,       'best_before',  180, '{}', true),
+  ('乾燥ひじき',         '乾物',     '海藻',     'dried_hijiki',         NULL,       'best_before',  730, '{}', true),
+  ('切り干し大根',       '乾物',     NULL,       'dried_daikon',         NULL,       'best_before',  365, '{}', true),
+  ('オートミール',       '穀類',     NULL,       'oatmeal',              NULL,       'best_before',  365, '{}', true),
+
+  -- ▼ 牛肉追加 (5 items)
+  ('牛ロース',           '肉類',     '牛肉',     'beef_loin',            'beef',     'use_by',       3,   '{}', true),
+  ('牛バラ肉',           '肉類',     '牛肉',     'beef_belly',           'beef',     'use_by',       3,   '{}', true),
+  ('牛もも肉',           '肉類',     '牛肉',     'beef_thigh',           'beef',     'use_by',       3,   '{}', true),
+  ('牛肩ロース',         '肉類',     '牛肉',     'beef_shoulder',        'beef',     'use_by',       3,   '{}', true),
+  ('牛すじ肉',           '肉類',     '牛肉',     'beef_tendon',          'beef',     'use_by',       3,   '{}', true),
+
+  -- ▼ 鶏肉追加 (3 items)
+  ('鶏ささみ',           '肉類',     '鶏肉',     'chicken_tender',       'chicken',  'use_by',       2,   '{}', true),
+  ('手羽先',             '肉類',     '鶏肉',     'chicken_wing_tip',     'chicken',  'use_by',       3,   '{}', true),
+  ('手羽元',             '肉類',     '鶏肉',     'chicken_wing',         'chicken',  'use_by',       3,   '{}', true),
+
+  -- ▼ 豚肉追加 (3 items)
+  ('豚しゃぶしゃぶ用',   '肉類',     '豚肉',     'pork_shabu',           'pork',     'use_by',       2,   '{}', true),
+  ('豚肩ロース',         '肉類',     '豚肉',     'pork_shoulder',        'pork',     'use_by',       3,   '{}', true),
+  ('豚スペアリブ',       '肉類',     '豚肉',     'pork_spare_ribs',      'pork',     'use_by',       3,   '{}', true),
+
+  -- ▼ その他肉類 (6 items)
+  ('ラム肉',             '肉類',     'ラム',     'lamb',                 NULL,       'use_by',       3,   '{}', true),
+  ('鶏レバー',           '肉類',     '鶏肉',     'chicken_liver',        'chicken',  'use_by',       2,   '{}', true),
+  ('豚レバー',           '肉類',     '豚肉',     'pork_liver',           'pork',     'use_by',       2,   '{}', true),
+  ('砂肝',               '肉類',     '鶏肉',     'gizzard',              'chicken',  'use_by',       2,   '{}', true),
+  ('牛タン',             '肉類',     '牛肉',     'beef_tongue',          'beef',     'use_by',       3,   '{}', true),
+  ('鶏皮',               '肉類',     '鶏肉',     'chicken_skin',         'chicken',  'use_by',       2,   '{}', true),
+
+  -- ▼ 魚介類追加 (14 items)
+  ('たこ',               '魚介類',   NULL,       'octopus',              NULL,       'use_by',       2,   '{}', true),
+  ('牡蠣',               '魚介類',   NULL,       'oyster',               NULL,       'use_by',       2,   '{}', true),
+  ('はんぺん',           '加工食品', NULL,       'hanpen',               NULL,       'best_before',  7,   '{}', true),
+  ('ししゃも',           '魚介類',   NULL,       'shishamo',             'fish',     'best_before',  5,   '{}', true),
+  ('さわら',             '魚介類',   NULL,       'sawara',               'fish',     'use_by',       2,   '{}', true),
+  ('ほっけ',             '魚介類',   NULL,       'hokke',                'fish',     'use_by',       2,   '{}', true),
+  ('うなぎ（蒲焼き）',   '魚介類',   NULL,       'eel',                  NULL,       'best_before',  3,   '{}', true),
+  ('鮭フレーク',         '加工食品', NULL,       'salmon_flakes',        NULL,       'best_before',  14,  '{}', true),
+  ('鮭缶',               '缶詰',     NULL,       'canned_salmon',        NULL,       'best_before',  1095,'{}', true),
+  ('あじの干物',         '魚介類',   NULL,       'dried_aji',            'fish',     'best_before',  5,   '{}', true),
+  ('にしん',             '魚介類',   NULL,       'herring',              'fish',     'use_by',       2,   '{}', true),
+  ('かに（むき身）',     '魚介類',   NULL,       'crab',                 NULL,       'use_by',       2,   '{}', true),
+  ('かにかま',           '加工食品', NULL,       'fish_cake',            NULL,       'best_before',  7,   '{}', true),
+  ('ホタルイカ',         '魚介類',   NULL,       'firefly_squid',        NULL,       'use_by',       2,   '{}', true),
+
+  -- ▼ 乳製品追加 (6 items)
+  ('粉チーズ',           '乳製品',   NULL,       'parmesan',             'cheese',   'best_before',  90,  '{}', true),
+  ('クリームチーズ',     '乳製品',   NULL,       'cream_cheese',         'cheese',   'best_before',  14,  '{}', true),
+  ('モッツァレラチーズ', '乳製品',   NULL,       'mozzarella',           'cheese',   'best_before',  7,   '{}', true),
+  ('プロセスチーズ',     '乳製品',   NULL,       'processed_cheese',     'cheese',   'best_before',  21,  '{}', true),
+  ('スキムミルク',       '乳製品',   NULL,       'skim_milk',            NULL,       'best_before',  365, '{}', true),
+  ('コンデンスミルク',   '乳製品',   NULL,       'condensed_milk',       NULL,       'best_before',  365, '{}', true),
+
+  -- ▼ 野菜追加（ハーブ含む）(22 items)
+  ('にら',               '野菜',     '葉物',     'nira',                 NULL,       'best_before',  5,   '{}', true),
+  ('長芋',               '野菜',     NULL,       'yam',                  NULL,       'best_before',  14,  '{}', true),
+  ('カリフラワー',       '野菜',     NULL,       'cauliflower',          NULL,       'best_before',  7,   '{}', true),
+  ('絹さや',             '野菜',     '豆類',     'snow_peas',            NULL,       'best_before',  5,   '{}', true),
+  ('グリーンピース',     '野菜',     '豆類',     'green_peas',           NULL,       'best_before',  5,   '{}', true),
+  ('大葉',               '野菜',     '香味野菜', 'shiso',                NULL,       'best_before',  5,   '{}', true),
+  ('みつば',             '野菜',     '葉物',     'mitsuba',              NULL,       'best_before',  5,   '{}', true),
+  ('バジル',             '野菜',     'ハーブ',   'basil',                NULL,       'best_before',  5,   '{}', true),
+  ('パセリ',             '野菜',     'ハーブ',   'parsley',              NULL,       'best_before',  7,   '{}', true),
+  ('プチトマト',         '野菜',     NULL,       'cherry_tomato',        NULL,       'best_before',  7,   '{}', true),
+  ('かぶ',               '野菜',     NULL,       'turnip',               NULL,       'best_before',  7,   '{}', true),
+  ('菜の花',             '野菜',     '葉物',     'rape_blossom',         NULL,       'best_before',  5,   '{}', true),
+  ('ルッコラ',           '野菜',     '葉物',     'arugula',              NULL,       'best_before',  5,   '{}', true),
+  ('かいわれ大根',       '野菜',     'スプラウト','daikon_sprouts',       NULL,       'best_before',  5,   '{}', true),
+  ('鷹の爪',             '野菜',     '香味野菜', 'chili_pepper',         NULL,       'best_before',  30,  '{}', true),
+  ('みょうが',           '野菜',     '香味野菜', 'myoga',                NULL,       'best_before',  7,   '{}', true),
+  ('芽キャベツ',         '野菜',     NULL,       'brussel_sprouts',      NULL,       'best_before',  7,   '{}', true),
+  ('万能ねぎ',           '野菜',     '葉物',     'thin_green_onion',     NULL,       'best_before',  7,   '{}', true),
+  ('にんにくの芽',       '野菜',     '香味野菜', 'garlic_shoots',        NULL,       'best_before',  5,   '{}', true),
+  ('サニーレタス',       '野菜',     '葉物',     'red_leaf_lettuce',     NULL,       'best_before',  5,   '{}', true),
+  ('ゴーヤ',             '野菜',     NULL,       'bitter_melon',         NULL,       'best_before',  5,   '{}', true),
+  ('ししとう',           '野菜',     NULL,       'shishito',             NULL,       'best_before',  5,   '{}', true),
+
+  -- ▼ 果物 (12 items)
+  ('りんご',             '果物',     NULL,       'apple',                NULL,       'best_before',  30,  '{}', true),
+  ('バナナ',             '果物',     NULL,       'banana',               NULL,       'best_before',  7,   '{}', true),
+  ('みかん',             '果物',     NULL,       'mandarin',             NULL,       'best_before',  14,  '{}', true),
+  ('いちご',             '果物',     NULL,       'strawberry',           NULL,       'best_before',  5,   '{}', true),
+  ('桃',                 '果物',     NULL,       'peach',                NULL,       'best_before',  5,   '{}', true),
+  ('梨',                 '果物',     NULL,       'pear',                 NULL,       'best_before',  14,  '{}', true),
+  ('ぶどう',             '果物',     NULL,       'grapes',               NULL,       'best_before',  7,   '{}', true),
+  ('キウイ',             '果物',     NULL,       'kiwi',                 NULL,       'best_before',  7,   '{}', true),
+  ('グレープフルーツ',   '果物',     NULL,       'grapefruit',           NULL,       'best_before',  14,  '{}', true),
+  ('ブルーベリー',       '果物',     NULL,       'blueberry',            NULL,       'best_before',  5,   '{}', true),
+  ('マンゴー',           '果物',     NULL,       'mango',                NULL,       'best_before',  5,   '{}', true),
+  ('メロン',             '果物',     NULL,       'melon',                NULL,       'best_before',  5,   '{}', true),
+
+  -- ▼ パン・穀類追加 (6 items)
+  ('バゲット',           'パン',     NULL,       'baguette',             'bread',    'best_before',  3,   '{}', true),
+  ('ロールパン',         'パン',     NULL,       'roll_bread',           'bread',    'best_before',  5,   '{}', true),
+  ('玄米',               '穀類',     NULL,       'brown_rice',           'rice',     'best_before',  365, '{}', true),
+  ('もち麦',             '穀類',     NULL,       'barley_rice',          NULL,       'best_before',  365, '{}', true),
+  ('米粉',               '粉類',     NULL,       'rice_flour',           'flour',    'best_before',  365, '{}', true),
+  ('十六穀米',           '穀類',     NULL,       'multigrain_rice',      'rice',     'best_before',  365, '{}', true),
+
+  -- ▼ 冷凍食品 (8 items)
+  ('冷凍コーン',         '冷凍食品', NULL,       'frozen_corn',          NULL,       'best_before',  365, '{}', true),
+  ('冷凍枝豆',           '冷凍食品', NULL,       'frozen_edamame',       NULL,       'best_before',  365, '{}', true),
+  ('冷凍ほうれん草',     '冷凍食品', NULL,       'frozen_spinach',       NULL,       'best_before',  365, '{}', true),
+  ('冷凍餃子',           '冷凍食品', NULL,       'frozen_gyoza',         NULL,       'best_before',  180, '{}', true),
+  ('冷凍うどん',         '冷凍食品', NULL,       'frozen_udon',          NULL,       'best_before',  180, '{}', true),
+  ('冷凍シーフードミックス','冷凍食品',NULL,     'frozen_seafood_mix',   NULL,       'best_before',  365, '{}', true),
+  ('冷凍えび',           '冷凍食品', NULL,       'frozen_shrimp',        NULL,       'best_before',  365, '{}', true),
+  ('冷凍ブロッコリー',   '冷凍食品', NULL,       'frozen_broccoli',      NULL,       'best_before',  365, '{}', true),
+
+  -- ▼ 保存食・惣菜系追加 (13 items)
+  ('明太子',             '魚介類',   NULL,       'mentaiko',             NULL,       'use_by',       7,   '{}', true),
+  ('たらこ',             '魚介類',   NULL,       'tarako',               NULL,       'use_by',       7,   '{}', true),
+  ('梅干し',             '加工食品', NULL,       'umeboshi',             NULL,       'best_before',  365, '{}', true),
+  ('キムチ',             '加工食品', NULL,       'kimchi',               NULL,       'best_before',  30,  '{}', true),
+  ('ザーサイ',           '加工食品', NULL,       'zha_cai',              NULL,       'best_before',  180, '{}', true),
+  ('メンマ',             '加工食品', NULL,       'menma',                NULL,       'best_before',  14,  '{}', true),
+  ('筍（水煮）',         '缶詰',     NULL,       'bamboo_shoot',         NULL,       'best_before',  730, '{}', true),
+  ('うに',               '魚介類',   NULL,       'sea_urchin',           NULL,       'use_by',       2,   '{}', true),
+  ('いくら',             '魚介類',   NULL,       'salmon_roe',           NULL,       'use_by',       7,   '{}', true),
+  ('塩辛',               '魚介類',   NULL,       'salted_squid',         NULL,       'best_before',  14,  '{}', true),
+  ('焼き鳥缶',           '缶詰',     NULL,       'canned_yakitori',      NULL,       'best_before',  1095,'{}', true),
+  ('デミグラスソース缶', '缶詰',     NULL,       'canned_demi_glace',    NULL,       'best_before',  1095,'{}', true),
+  ('コーンビーフ缶',     '缶詰',     NULL,       'canned_corned_beef',   NULL,       'best_before',  1095,'{}', true),
+
+  -- ▼ スパイス・乾燥ハーブ (13 items)
+  ('黒こしょう',         'スパイス', NULL,       'black_pepper',         'pepper',   'best_before',  730, '{}', true),
+  ('白こしょう',         'スパイス', NULL,       'white_pepper',         'pepper',   'best_before',  730, '{}', true),
+  ('一味唐辛子',         'スパイス', NULL,       'ichimi',               NULL,       'best_before',  365, '{}', true),
+  ('七味唐辛子',         'スパイス', NULL,       'shichimi',             NULL,       'best_before',  365, '{}', true),
+  ('シナモン',           'スパイス', NULL,       'cinnamon',             NULL,       'best_before',  730, '{}', true),
+  ('クミン',             'スパイス', NULL,       'cumin',                NULL,       'best_before',  730, '{}', true),
+  ('ターメリック',       'スパイス', NULL,       'turmeric',             NULL,       'best_before',  730, '{}', true),
+  ('ナツメグ',           'スパイス', NULL,       'nutmeg',               NULL,       'best_before',  730, '{}', true),
+  ('ローリエ',           'スパイス', NULL,       'bay_leaf',             NULL,       'best_before',  730, '{}', true),
+  ('乾燥バジル',         'スパイス', NULL,       'dried_basil',          NULL,       'best_before',  730, '{}', true),
+  ('オレガノ',           'スパイス', NULL,       'oregano',              NULL,       'best_before',  730, '{}', true),
+  ('ローズマリー',       'スパイス', NULL,       'rosemary',             NULL,       'best_before',  730, '{}', true),
+  ('コリアンダー',       'スパイス', NULL,       'coriander',            NULL,       'best_before',  730, '{}', true),
+
+  -- ▼ ナッツ・乾燥豆 (8 items)
+  ('アーモンド',         'ナッツ',   NULL,       'almond',               'nut',      'best_before',  180, '{}', true),
+  ('くるみ',             'ナッツ',   NULL,       'walnut',               'nut',      'best_before',  90,  '{}', true),
+  ('ピーナッツ',         'ナッツ',   NULL,       'peanut',               'nut',      'best_before',  180, '{}', true),
+  ('カシューナッツ',     'ナッツ',   NULL,       'cashew',               'nut',      'best_before',  180, '{}', true),
+  ('黒豆',               '大豆製品', '豆類',     'black_bean',           NULL,       'best_before',  365, '{}', true),
+  ('小豆',               '乾物',     '豆類',     'azuki',                NULL,       'best_before',  365, '{}', true),
+  ('レンズ豆',           '乾物',     '豆類',     'lentil',               NULL,       'best_before',  730, '{}', true),
+  ('ミックスナッツ',     'ナッツ',   NULL,       'mixed_nuts',           'nut',      'best_before',  180, '{}', true),
+
+  -- ▼ 海藻・その他 (10 items)
+  ('めかぶ',             '海藻',     NULL,       'mekabu',               NULL,       'use_by',       5,   '{}', true),
+  ('塩昆布',             '乾物',     '海藻',     'salted_konbu',         NULL,       'best_before',  365, '{}', true),
+  ('とろろ昆布',         '乾物',     '海藻',     'tororo_konbu',         NULL,       'best_before',  180, '{}', true),
+  ('もずく',             '海藻',     NULL,       'mozuku',               NULL,       'use_by',       7,   '{}', true),
+  ('岩のり',             '海藻',     NULL,       'iwa_nori',             NULL,       'best_before',  90,  '{}', true),
+  ('わかめ（生）',       '海藻',     NULL,       'fresh_wakame',         NULL,       'use_by',       5,   '{}', true),
+  ('甘酒',               '加工食品', NULL,       'amazake',              NULL,       'best_before',  14,  '{}', true),
+  ('酒かす',             '調味料',   NULL,       'sake_lees',            NULL,       'best_before',  30,  '{}', true),
+  ('粒マスタード',       '調味料',   NULL,       'grain_mustard',        NULL,       'best_before',  365, '{}', true),
+  ('バルサミコ酢',       '調味料',   NULL,       'balsamic_vinegar',     NULL,       'best_before',  730, '{}', true),
+
+  -- ▼ 製菓・製パン材料 (6 items)
+  ('ベーキングパウダー', '製菓材料', NULL,       'baking_powder',        NULL,       'best_before',  180, '{}', true),
+  ('重曹',               '製菓材料', NULL,       'baking_soda',          NULL,       'best_before',  365, '{}', true),
+  ('ゼラチン',           '製菓材料', NULL,       'gelatin',              NULL,       'best_before',  730, '{}', true),
+  ('寒天',               '製菓材料', NULL,       'agar',                 NULL,       'best_before',  730, '{}', true),
+  ('バニラエッセンス',   '製菓材料', NULL,       'vanilla',              NULL,       'best_before',  730, '{}', true),
+  ('ドライイースト',     '製菓材料', NULL,       'dry_yeast',            NULL,       'best_before',  180, '{}', true),
+
+  -- ▼ 調理用酒・その他 (4 items)
+  ('白ワイン',           '調味料',   NULL,       'white_wine',           NULL,       'best_before',  30,  '{}', true),
+  ('赤ワイン',           '調味料',   NULL,       'red_wine',             NULL,       'best_before',  30,  '{}', true),
+  ('みりん風調味料',     '調味料',   NULL,       'mirin_style',          NULL,       'best_before',  365, '{}', true),
+  ('料理用ブランデー',   '調味料',   NULL,       'cooking_brandy',       NULL,       'best_before',  365, '{}', true),
+
+  -- ▼ 追加（合計300件確保）(8 items)
+  ('真鯛',               '魚介類',   NULL,       'sea_bream',            'fish',     'use_by',       2,   '{}', true),
+  ('金目鯛',             '魚介類',   NULL,       'kinmedai',             'fish',     'use_by',       2,   '{}', true),
+  ('わかさぎ',           '魚介類',   NULL,       'smelt',                'fish',     'use_by',       2,   '{}', true),
+  ('クレソン',           '野菜',     '葉物',     'watercress',           NULL,       'best_before',  5,   '{}', true),
+  ('セリ',               '野菜',     '葉物',     'seri',                 NULL,       'best_before',  5,   '{}', true),
+  -- 天かす・揚げ玉は同一食品のため aliases に統合し1行で管理する
+  ('天かす',             '加工食品', NULL,       'tenkasu',              NULL,       'best_before',  30,  '["揚げ玉"]', true),
+  ('ピクルス',           '加工食品', NULL,       'pickles',              NULL,       'best_before',  30,  '{}', true),
+  ('あんこ',             '加工食品', NULL,       'anko',                 NULL,       'best_before',  14,  '{}', true);
 
 -- ============================================================
 -- Recipe seed data (50 recipes)
