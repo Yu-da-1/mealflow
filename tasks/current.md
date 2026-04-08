@@ -1,31 +1,43 @@
-## Phase 11-1: 食品マスタデータ追加（野菜・肉・魚介・乳製品）
+## Phase 12-1: バーコード照合 API
 
-- ブランチ: `chore/food-master-expansion`
+- ブランチ: `feature/barcode-api`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- `supabase/seed.sql` の food_masters が 300 件以上になっている
-- 追加データに category / subcategory / recipe_match_key / default_expiry_days がすべて設定されている
-- ローカル DB に `supabase db reset` を実行してエラーなく適用できる
-- オートコンプリートで主要食材（野菜・肉・魚介・乳製品・調味料・缶詰）が検索できる
+- `/api/barcode/[code]` に JAN コードを渡すと food_masters から一致する食品を返す
+- ヒットしない場合は `404` を返す
+- Open Food Facts API へのフォールバックを実装する（マスタに未登録の商品でも食品名を取得できる）
+- API の型定義・repository が揃っている
 
 ### タスク
 
-- [x] 野菜類を追加（葉物・根菜・きのこ・豆類など）
-- [x] 肉類・加工肉を追加（牛・豚・ひき肉・ソーセージ・ベーコンなど）
-- [x] 魚介類を追加（切り身・刺身・干物・缶詰など）
-- [x] 乳製品・卵類を追加（チーズ・バター・ヨーグルトなど）
-- [x] 調味料・ソース類を追加（醤油・みそ・ケチャップ・ドレッシングなど）
-- [x] 穀物・パン・麺類を追加（米・パスタ・うどん・そばなど）
-- [ ] `supabase db reset` でエラーなく適用されることを確認（Docker未起動のためスキップ。SQL構文・重複キーはファイルレベルで検証済み）
+- [x] `food_master_jan_codes` テーブルのマイグレーションを追加
+- [x] `FoodMasterJanCodeRow` 型を `src/lib/types/database.ts` に追加
+- [x] `BarcodeResponse` 型を `src/lib/types/ui.ts` に追加
+- [x] `janCodeRepository.ts` を新規作成（`findFoodMasterByJanCode`）
+- [x] Open Food Facts API クライアントを `src/server/openFoodFacts.ts` に実装
+- [x] `/api/barcode/[code]` ルートを実装
+- [x] ユニットテストを追加（マスタヒット・OFFヒット・完全ミスの3ケース）
 
 ### plan
 
 - 影響ファイル:
-  - `supabase/seed.sql`（food_masters に 200 件追加、合計 300 件）
-- 実装内容:
-  - 調味料35件、乾物・粉類18件、牛肉5件、鶏肉3件、豚肉3件、その他肉類6件、魚介類14件、乳製品6件、野菜22件、果物12件、パン・穀類6件、冷凍食品8件、保存食13件、スパイス13件、ナッツ・豆8件、海藻10件、製菓材料6件、調理用酒4件、追加8件
-  - recipe_match_key 300件すべて一意（Python で検証済み）
-  - pnpm vitest run: 72テスト全通過
-- 備考: Docker未起動のため `supabase db reset` の実行確認は本番反映時に行う
+  - `supabase/migrations/20260409000000_add_food_master_jan_codes.sql`（新規）
+  - `src/lib/types/database.ts`（FoodMasterJanCodeRow 追加）
+  - `src/lib/types/ui.ts`（BarcodeResponse 追加）
+  - `src/server/repositories/janCodeRepository.ts`（新規）
+  - `src/server/openFoodFacts.ts`（新規: OFFクライアント）
+  - `src/domain/barcode/resolveBarcodeResult.ts`（新規: 純粋関数）
+  - `src/app/api/barcode/[code]/route.ts`（新規）
+  - `src/domain/barcode/__tests__/resolveBarcodeResult.test.ts`（新規）
+- 実装順:
+  1. マイグレーション
+  2. 型定義（database.ts → ui.ts）
+  3. janCodeRepository
+  4. openFoodFacts クライアント
+  5. domain 関数（resolveBarcodeResult）
+  6. API ルート
+  7. テスト
+- 備考: テスト対象はロジックを持つ domain 関数（resolveBarcodeResult）に集約。APIルートは repository・domain を呼ぶだけ
+- quality-checker 修正: Domain層が @/server から型をインポートしていたアーキテクチャ違反を修正。OffProductResult を @/lib/types/ui.ts に移動
