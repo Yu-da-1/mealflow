@@ -73,6 +73,12 @@ export type RecipeRecommendationLogRow = {
   created_at: string;
 };
 
+export type FoodMasterJanCodeRow = {
+  jan_code: string;
+  food_master_id: string;
+  created_at: string;
+};
+
 export type ConsumeFromRecipeInput = {
   recipe_id: string;
   ingredient_keys: string[];

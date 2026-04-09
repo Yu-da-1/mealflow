@@ -12,24 +12,127 @@ category / recipe_match_key / default_expiry_days の精度も合わせて整備
 
 ---
 
-### Phase 11-1: 食品マスタデータ追加（野菜・肉・魚介・乳製品）
+### Phase 11-1: 食品マスタデータ追加（野菜・肉・魚介・乳製品） ✅ 完了
 
-- ブランチ: `chore/food-master-expansion`
+---
+
+## Phase 12: バーコードスキャン
+
+カメラで JAN コードを読み取り食品マスタと照合して在庫登録できるようにする。
+食品マスタ拡充（Phase 11）が完了しているためヒット率が高い状態で導入できる。
+
+---
+
+### Phase 12-1: バーコード照合 API
+
+- ブランチ: `feature/barcode-api`
 - PR: このグループ完了後に1PR
 
 #### 完了条件
 
-- `supabase/seed.sql` の food_masters が 300 件以上になっている
-- 追加データに category / subcategory / recipe_match_key / default_expiry_days がすべて設定されている
-- ローカル DB に `supabase db reset` を実行してエラーなく適用できる
-- オートコンプリートで主要食材（野菜・肉・魚介・乳製品・調味料・缶詰）が検索できる
+- `/api/barcode/[code]` に JAN コードを渡すと food_masters から一致する食品を返す
+- ヒットしない場合は `404` を返す
+- Open Food Facts API へのフォールバックを実装する（マスタに未登録の商品でも食品名を取得できる）
+- API の型定義・repository が揃っている
 
 #### タスク
 
-- [ ] 野菜類を追加（葉物・根菜・きのこ・豆類など）
-- [ ] 肉類・加工肉を追加（牛・豚・ひき肉・ソーセージ・ベーコンなど）
-- [ ] 魚介類を追加（切り身・刺身・干物・缶詰など）
-- [ ] 乳製品・卵類を追加（チーズ・バター・ヨーグルトなど）
-- [ ] 調味料・ソース類を追加（醤油・みそ・ケチャップ・ドレッシングなど）
-- [ ] 穀物・パン・麺類を追加（米・パスタ・うどん・そばなど）
-- [ ] `supabase db reset` でエラーなく適用されることを確認
+- [ ] `BarcodeResponse` 型を `src/lib/types/ui.ts` に追加
+- [ ] `foodMasterRepository` に `findByJanCode` 関数を追加（`jan_code` カラムがなければ Open Food Facts のみ対応）
+- [ ] Open Food Facts API クライアントを `src/server/` に実装（`GET https://world.openfoodfacts.org/api/v0/product/[barcode].json`）
+- [ ] `/api/barcode/[code]` ルートを実装（マスタ照合 → ヒットなら food_master 情報を返す、ミスなら Open Food Facts で食品名だけ返す）
+- [ ] ユニットテストを追加（ヒット・ミス・OFFフォールバックの3ケース）
+
+---
+
+### Phase 12-2: スキャン UI + 登録フロー連携
+
+- ブランチ: `feature/barcode-ui`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- 食品登録画面に「バーコードを読み取る」ボタンが追加されている
+- カメラで JAN コードをスキャンすると食品名・期限が自動入力された登録フォームに遷移する
+- マスタ未登録コードの場合は「この食品はマスタにありません」と表示し手動入力フォームへ移行する
+- `docs/design.md` セクション 6.3 の仕様を満たしている
+
+#### タスク
+
+- [ ] `@zxing/browser` をインストールし、`BarcodeScanner` コンポーネントを実装（リアルタイムスキャン）
+- [ ] 食品登録画面（`FoodForm`）に「バーコードを読み取る」ボタンを追加
+- [ ] スキャン結果を `/api/barcode/[code]` に投げて食品名・期限を `FoodForm` に反映する `useBarcodeScanner` hookを実装
+- [ ] ミス時のフォールバック UI を実装（トースト通知 + 手動入力モードへ切り替え）
+- [ ] モバイル実機でスキャン動作を確認
+
+---
+
+## Phase 13: ユーザー認証
+
+Supabase Auth を使ってメール/パスワード・ソーシャルログインを実装し、各ユーザーのデータを分離する。
+家族共有（Phase 14 以降）の前提となる。
+
+---
+
+### Phase 13-1: Supabase Auth 導入（ログイン・サインアップ UI）
+
+- ブランチ: `feature/auth-ui`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- メール/パスワードでサインアップ・ログイン・ログアウトができる
+- Google ソーシャルログインができる
+- 未ログイン状態でアプリにアクセスするとログイン画面にリダイレクトされる
+- ログイン状態は Supabase Auth セッションで管理されている
+
+#### タスク
+
+- [ ] Supabase Auth の Email/Password プロバイダを有効化（Supabase ダッシュボード）
+- [ ] Google OAuth プロバイダを設定（Google Cloud Console + Supabase ダッシュボード）
+- [ ] `src/features/auth/` ディレクトリを作成し、ログイン・サインアップコンポーネントを実装
+- [ ] `src/app/(auth)/login/page.tsx` を実装
+- [ ] Next.js Middleware でセッションチェック → 未ログイン時は `/login` にリダイレクト
+- [ ] ヘッダーにユーザー情報・ログアウトボタンを追加
+
+---
+
+### Phase 13-2: スキーマ変更（user_id + RLS）
+
+- ブランチ: `feature/auth-rls`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- `inventory_lots` / `recipe_recommendation_logs` に `user_id uuid references auth.users` カラムが追加されている
+- 各テーブルに RLS ポリシーが設定されており、自分のデータのみ読み書きできる
+- マイグレーションファイルが `supabase/migrations/` に追加されている
+- 本番 DB にマイグレーションが適用されている
+
+#### タスク
+
+- [ ] `supabase/migrations/YYYYMMDD_add_user_id.sql` を作成（`inventory_lots`・`recipe_recommendation_logs` に `user_id` 追加）
+- [ ] 各テーブルの RLS ポリシーを作成（`auth.uid() = user_id`）
+- [ ] `food_masters` と `recipes` は全ユーザー共通のため RLS 対象外とする
+- [ ] ローカルで `supabase db reset` を実行してマイグレーションを確認
+
+---
+
+### Phase 13-3: 既存機能の user_id 対応
+
+- ブランチ: `feature/auth-integration`
+- PR: このグループ完了後に1PR
+
+#### 完了条件
+
+- 全 repository・API ルートが `user_id` でフィルタされている
+- ログインユーザーのデータのみが表示・操作できる
+- 既存のテストが通る
+
+#### タスク
+
+- [ ] `src/server/repositories/inventoryRepository.ts` の全関数に `userId` 引数を追加
+- [ ] `src/app/api/` 配下の全ルートで `supabase.auth.getUser()` を呼び出し `userId` を取得して repository に渡す
+- [ ] `recipe_recommendation_logs` repository にも `userId` を追加
+- [ ] 既存テストを更新（`userId` を渡すように修正）
+- [ ] ログインユーザー切り替え時にデータが正しく分離されることを手動確認

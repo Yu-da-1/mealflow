@@ -16,6 +16,16 @@ export type RecipeWithIngredients = RecipeRow & {
   ingredients: RecipeIngredientRow[];
 };
 
+export type BarcodeResponse = {
+  source: "master" | "open_food_facts";
+  food_master_id: string | null;
+  display_name: string;
+  default_expiry_days: number | null;
+  default_expiry_type: "best_before" | "use_by" | null;
+};
+
+export type OffProductResult = { found: true; displayName: string } | { found: false };
+
 export type RecommendedRecipeResponse = {
   id: string;
   title: string;
