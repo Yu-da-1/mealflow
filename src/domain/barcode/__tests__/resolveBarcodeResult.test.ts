@@ -25,6 +25,7 @@ describe("resolveBarcodeResult", () => {
       source: "master",
       food_master_id: "uuid-egg",
       display_name: "卵",
+      category: "乳卵類",
       default_expiry_days: 14,
       default_expiry_type: "best_before",
     });
@@ -37,6 +38,7 @@ describe("resolveBarcodeResult", () => {
       source: "open_food_facts",
       food_master_id: null,
       display_name: "有機たまご",
+      category: null,
       default_expiry_days: null,
       default_expiry_type: null,
     });

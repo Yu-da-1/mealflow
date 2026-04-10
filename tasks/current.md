@@ -1,43 +1,37 @@
-## Phase 12-1: バーコード照合 API
+## Phase 12-2: スキャン UI + 登録フロー連携
 
-- ブランチ: `feature/barcode-api`
+- ブランチ: `feature/barcode-ui`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- `/api/barcode/[code]` に JAN コードを渡すと food_masters から一致する食品を返す
-- ヒットしない場合は `404` を返す
-- Open Food Facts API へのフォールバックを実装する（マスタに未登録の商品でも食品名を取得できる）
-- API の型定義・repository が揃っている
+- 食品登録画面に「バーコードを読み取る」ボタンが追加されている
+- カメラで JAN コードをスキャンすると食品名・期限が自動入力された登録フォームに遷移する
+- マスタ未登録コードの場合は「この食品はマスタにありません」と表示し手動入力フォームへ移行する
+- `docs/design.md` セクション 6.3 の仕様を満たしている
 
 ### タスク
 
-- [x] `food_master_jan_codes` テーブルのマイグレーションを追加
-- [x] `FoodMasterJanCodeRow` 型を `src/lib/types/database.ts` に追加
-- [x] `BarcodeResponse` 型を `src/lib/types/ui.ts` に追加
-- [x] `janCodeRepository.ts` を新規作成（`findFoodMasterByJanCode`）
-- [x] Open Food Facts API クライアントを `src/server/openFoodFacts.ts` に実装
-- [x] `/api/barcode/[code]` ルートを実装
-- [x] ユニットテストを追加（マスタヒット・OFFヒット・完全ミスの3ケース）
+- [x] `@zxing/browser` をインストールし、`BarcodeScanner` コンポーネントを実装（リアルタイムスキャン）
+- [x] 食品登録画面（`FoodForm`）に「バーコードを読み取る」ボタンを追加
+- [x] スキャン結果を `/api/barcode/[code]` に投げて食品名・期限を `FoodForm` に反映する `useBarcodeScanner` hookを実装
+- [x] ミス時のフォールバック UI を実装（トースト通知 + 手動入力モードへ切り替え）
+- [ ] モバイル実機でスキャン動作を確認（手動確認）
 
 ### plan
 
 - 影響ファイル:
-  - `supabase/migrations/20260409000000_add_food_master_jan_codes.sql`（新規）
-  - `src/lib/types/database.ts`（FoodMasterJanCodeRow 追加）
-  - `src/lib/types/ui.ts`（BarcodeResponse 追加）
-  - `src/server/repositories/janCodeRepository.ts`（新規）
-  - `src/server/openFoodFacts.ts`（新規: OFFクライアント）
-  - `src/domain/barcode/resolveBarcodeResult.ts`（新規: 純粋関数）
-  - `src/app/api/barcode/[code]/route.ts`（新規）
-  - `src/domain/barcode/__tests__/resolveBarcodeResult.test.ts`（新規）
+  - `src/features/inventory/hooks/useBarcodeScanner.ts`（新規: スキャン状態管理 + API呼び出し）
+  - `src/features/inventory/components/BarcodeScanner.tsx`（新規: カメラ UI + @zxing/browser リアルタイムスキャン）
+  - `src/features/inventory/components/FoodRegisterForm.tsx`（バーコードボタン + scanner 統合）
 - 実装順:
-  1. マイグレーション
-  2. 型定義（database.ts → ui.ts）
-  3. janCodeRepository
-  4. openFoodFacts クライアント
-  5. domain 関数（resolveBarcodeResult）
-  6. API ルート
-  7. テスト
-- 備考: テスト対象はロジックを持つ domain 関数（resolveBarcodeResult）に集約。APIルートは repository・domain を呼ぶだけ
-- quality-checker 修正: Domain層が @/server から型をインポートしていたアーキテクチャ違反を修正。OffProductResult を @/lib/types/ui.ts に移動
+  1. `@zxing/browser` インストール
+  2. `useBarcodeScanner` hook（ScanState union型 + API呼び出し）
+  3. `BarcodeScanner` コンポーネント
+  4. `FoodRegisterForm` に統合
+- 設計メモ:
+  - ScanState: idle | scanning | loading | found_master | found_off | not_found
+  - master ヒット時 → `/api/food-masters?query=name` で FoodMasterRow を取得して selectMaster に渡す
+  - OFFヒット時 → display_name をクエリにセット（手動で選択が必要）
+  - not_found → インライントースト通知（外部ライブラリ不使用）
+  - トーストは useTimeout で 3 秒後に自動消去

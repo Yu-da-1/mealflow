@@ -20,6 +20,7 @@ export const resolveBarcodeResult = (
       source: "master",
       food_master_id: master.id,
       display_name: master.display_name,
+      category: master.category,
       default_expiry_days: master.default_expiry_days,
       default_expiry_type: master.default_expiry_type,
     };
@@ -30,6 +31,7 @@ export const resolveBarcodeResult = (
       source: "open_food_facts",
       food_master_id: null,
       display_name: off.displayName,
+      category: null,
       default_expiry_days: null,
       default_expiry_type: null,
     };
