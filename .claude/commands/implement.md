@@ -141,6 +141,13 @@ quality-checker が完了報告を返したら次のステップへ進む。
 
 レビューで問題があれば修正してから次へ進む。
 
+**code-reviewer が1件でもコードを修正した場合は、必ず quality-checker を再実行する。**
+reviewer の修正が lint・型・テストを壊していないことを確認してから次へ進む。
+
+> quality-checker を使って実装したコードを検証してください
+
+quality-checker が全グリーンを報告してから次のステップへ進む。
+
 ### 2. PR本文を生成して /tmp/pr_body.md に書き出す
 
 以下の手順でPR本文を組み立てる。
