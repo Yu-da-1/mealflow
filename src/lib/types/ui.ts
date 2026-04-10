@@ -20,6 +20,7 @@ export type BarcodeResponse = {
   source: "master" | "open_food_facts";
   food_master_id: string | null;
   display_name: string;
+  category: string | null;
   default_expiry_days: number | null;
   default_expiry_type: "best_before" | "use_by" | null;
 };
