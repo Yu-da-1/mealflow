@@ -1,7 +1,7 @@
 "use client";
 
 import { BrowserMultiFormatReader } from "@zxing/browser";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 type BarcodeScannerProps = {
   onDetected: (code: string) => void;
@@ -19,11 +19,13 @@ export function BarcodeScanner({ onDetected, onClose }: BarcodeScannerProps) {
   const readerRef = useRef<BrowserMultiFormatReader | null>(null);
   const detectedRef = useRef(false);
   // コールバックを ref に保持することで、呼び出し元がメモ化していなくても
-  // カメラの再初期化が起きないようにする
+  // カメラの再初期化が起きないようにする。render 中の ref 更新は禁止のため useLayoutEffect で同期する
   const onDetectedRef = useRef(onDetected);
   const onCloseRef = useRef(onClose);
-  onDetectedRef.current = onDetected;
-  onCloseRef.current = onClose;
+  useLayoutEffect(() => {
+    onDetectedRef.current = onDetected;
+    onCloseRef.current = onClose;
+  });
 
   useEffect(() => {
     const reader = new BrowserMultiFormatReader();
@@ -51,7 +53,6 @@ export function BarcodeScanner({ onDetected, onClose }: BarcodeScannerProps) {
       BrowserMultiFormatReader.releaseAllStreams();
     };
     // マウント時に一度だけカメラを起動する。コールバックは ref 経由で常に最新を参照する
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
