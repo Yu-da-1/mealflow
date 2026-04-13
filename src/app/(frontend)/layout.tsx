@@ -18,7 +18,7 @@ export default function FrontendLayout({
     <html lang="ja">
       <body className="flex h-screen overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto pb-16 sm:pb-0 bg-background">{children}</main>
+        <main className="flex-1 overflow-y-auto pb-[95px] sm:pb-0 bg-background">{children}</main>
         <BottomTabBar />
       </body>
     </html>
