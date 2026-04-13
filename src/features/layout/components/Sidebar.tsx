@@ -20,7 +20,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-60 flex-col bg-sidebar border-r border-sidebar-border">
+    <aside className="hidden sm:flex h-screen w-60 flex-col bg-sidebar border-r border-sidebar-border">
       {/* ロゴ */}
       <div className="flex items-center gap-2 px-6 py-5">
         <Utensils size={18} className="text-primary" />
