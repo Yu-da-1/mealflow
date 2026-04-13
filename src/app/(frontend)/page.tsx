@@ -1,8 +1,6 @@
 // DBを参照するためビルド時の静的プリレンダリングを無効化する
 export const dynamic = "force-dynamic";
 
-import Link from "next/link";
-import { PlusCircle } from "lucide-react";
 
 import type { FoodMasterRow } from "@/lib/types/database";
 import type {
@@ -21,6 +19,8 @@ import {
   getRecentlyRecommendedRecipeIds,
 } from "@/server/repositories/recipeRepository";
 import { HomeExpirationSection } from "@/features/home/components/HomeExpirationSection";
+import { HomeHero } from "@/features/home/components/HomeHero";
+import { HomeInventoryCard } from "@/features/home/components/HomeInventoryCard";
 import { HomeRecipeSection } from "@/features/home/components/HomeRecipeSection";
 
 const RECOMMEND_COUNT = 3;
@@ -101,32 +101,25 @@ export default async function HomePage() {
   const isEmpty = lots.length === 0;
 
   return (
-    <div className="p-6 max-w-2xl">
-      {/* ヘッダー */}
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-foreground">ホーム</h1>
-        <Link
-          href="/inventory/new"
-          className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white hover:opacity-90 transition-opacity"
-        >
-          <PlusCircle size={15} />
-          食品を追加
-        </Link>
-      </div>
+    <div>
+      {/* ヒーローエリア */}
+      <HomeHero />
 
-      {/* 在庫サマリ */}
-      <p className="mb-6 text-sm text-muted-foreground">
-        {isEmpty ? "まだ食品が登録されていません" : `${summary.length} 種類の食品があります`}
-      </p>
-
-      {isEmpty ? (
-        <p className="text-sm text-muted-foreground">食品を追加するとレシピ提案が表示されます</p>
-      ) : (
-        <div className="space-y-8">
+      {/* コンテンツエリア */}
+      <div className="flex flex-col gap-5 px-4 py-5">
+        {!isEmpty && (
           <HomeExpirationSection items={displayedItems} today={today} hasMore={hasMore} />
+        )}
+
+        {/* 在庫サマリカード */}
+        <HomeInventoryCard count={summary.length} />
+
+        {isEmpty ? (
+          <p className="text-sm text-muted-foreground">食品を追加するとレシピ提案が表示されます</p>
+        ) : (
           <HomeRecipeSection recipes={recommendedRecipes} />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

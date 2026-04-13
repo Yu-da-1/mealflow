@@ -1,24 +1,3 @@
-## Phase 12-3: モバイルナビゲーション（底部タブバー）
-
-- ブランチ: `feature/mobile-nav`
-- PR: このグループ完了後に1PR
-
-### 完了条件
-
-- モバイル（640px未満）で底部タブバーが表示される
-- タブはホーム・食品・スキャン・レシピの4つ
-- デスクトップでは底部タブバーが非表示のまま（サイドバーを使う）
-- 現在のページに対応するタブがアクティブ表示される
-
-### タスク
-
-- [ ] `BottomTabBar` コンポーネントを `src/features/layout/components/` に実装
-- [ ] `src/app/(frontend)/layout.tsx` に `BottomTabBar` を追加（`sm:hidden` で制御）
-- [ ] `Sidebar` を `hidden sm:flex` に変更してモバイルで非表示にする
-- [ ] モバイル・デスクトップ両方で表示を手動確認
-
----
-
 ## Phase 12-4: ホーム画面 UI 刷新
 
 - ブランチ: `feature/mobile-home-ui`
