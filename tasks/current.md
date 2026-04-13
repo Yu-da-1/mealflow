@@ -1,37 +1,59 @@
-## Phase 12-2: スキャン UI + 登録フロー連携
+## Phase 12-3: モバイルナビゲーション（底部タブバー）
 
-- ブランチ: `feature/barcode-ui`
+- ブランチ: `feature/mobile-nav`
 - PR: このグループ完了後に1PR
 
 ### 完了条件
 
-- 食品登録画面に「バーコードを読み取る」ボタンが追加されている
-- カメラで JAN コードをスキャンすると食品名・期限が自動入力された登録フォームに遷移する
-- マスタ未登録コードの場合は「この食品はマスタにありません」と表示し手動入力フォームへ移行する
-- `docs/design.md` セクション 6.3 の仕様を満たしている
+- モバイル（640px未満）で底部タブバーが表示される
+- タブはホーム・食品・スキャン・レシピの4つ
+- デスクトップでは底部タブバーが非表示のまま（サイドバーを使う）
+- 現在のページに対応するタブがアクティブ表示される
 
 ### タスク
 
-- [x] `@zxing/browser` をインストールし、`BarcodeScanner` コンポーネントを実装（リアルタイムスキャン）
-- [x] 食品登録画面（`FoodForm`）に「バーコードを読み取る」ボタンを追加
-- [x] スキャン結果を `/api/barcode/[code]` に投げて食品名・期限を `FoodForm` に反映する `useBarcodeScanner` hookを実装
-- [x] ミス時のフォールバック UI を実装（トースト通知 + 手動入力モードへ切り替え）
-- [ ] モバイル実機でスキャン動作を確認（手動確認）
+- [ ] `BottomTabBar` コンポーネントを `src/features/layout/components/` に実装
+- [ ] `src/app/(frontend)/layout.tsx` に `BottomTabBar` を追加（`sm:hidden` で制御）
+- [ ] `Sidebar` を `hidden sm:flex` に変更してモバイルで非表示にする
+- [ ] モバイル・デスクトップ両方で表示を手動確認
 
-### plan
+---
 
-- 影響ファイル:
-  - `src/features/inventory/hooks/useBarcodeScanner.ts`（新規: スキャン状態管理 + API呼び出し）
-  - `src/features/inventory/components/BarcodeScanner.tsx`（新規: カメラ UI + @zxing/browser リアルタイムスキャン）
-  - `src/features/inventory/components/FoodRegisterForm.tsx`（バーコードボタン + scanner 統合）
-- 実装順:
-  1. `@zxing/browser` インストール
-  2. `useBarcodeScanner` hook（ScanState union型 + API呼び出し）
-  3. `BarcodeScanner` コンポーネント
-  4. `FoodRegisterForm` に統合
-- 設計メモ:
-  - ScanState: idle | scanning | loading | found_master | found_off | not_found
-  - master ヒット時 → `/api/food-masters?query=name` で FoodMasterRow を取得して selectMaster に渡す
-  - OFFヒット時 → display_name をクエリにセット（手動で選択が必要）
-  - not_found → インライントースト通知（外部ライブラリ不使用）
-  - トーストは useTimeout で 3 秒後に自動消去
+## Phase 12-4: ホーム画面 UI 刷新
+
+- ブランチ: `feature/mobile-home-ui`
+- PR: このグループ完了後に1PR
+
+### 完了条件
+
+- ホームにオレンジのヒーローエリア（挨拶テキスト + 「今日の献立」 + 食品追加ボタン）が表示される
+- 在庫サマリが「N 種類の食品」カード形式で表示される
+- `docs/ui-design.md` のホーム画面レイアウトを満たしている
+
+### タスク
+
+- [ ] `HomeHero` コンポーネントを実装（挨拶 + タイトル + +ボタン）
+- [ ] `HomeInventoryCard` コンポーネントを実装（在庫件数カード）
+- [ ] `src/app/(frontend)/page.tsx` のレイアウトを更新して両コンポーネントを組み込む
+- [ ] モバイルで表示を手動確認
+
+---
+
+## Phase 12-5: レシピ画面 UI 刷新
+
+- ブランチ: `feature/mobile-recipe-ui`
+- PR: このグループ完了後に1PR
+
+### 完了条件
+
+- 1件目のレシピが大きいヒーローカードで表示される
+- ヒーローカードに「このレシピを使う」ボタンが直置きされている
+- 2件目以降はコンパクトなサブカードで表示される
+- `docs/ui-design.md` のレシピ画面レイアウトを満たしている
+
+### タスク
+
+- [ ] `RecipeHeroCard` コンポーネントを実装（画像エリア・食材・バッジ・CTA ボタン）
+- [ ] `RecipeList` を更新して1件目をヒーローカード、2件目以降をサブカードで表示
+- [ ] モバイルで表示を手動確認
+
