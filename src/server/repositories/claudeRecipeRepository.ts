@@ -20,6 +20,8 @@ type SavedRecipe = {
   cooking_time_minutes: number | null;
   instructions: string | null;
   reason: string;
+  ingredient_names: string[];
+  has_expiring_ingredients: boolean;
 };
 
 const parseClaudeResponse = (text: string): ClaudeGeneratedRecipe[] => {
@@ -29,7 +31,10 @@ const parseClaudeResponse = (text: string): ClaudeGeneratedRecipe[] => {
   return result.recipes;
 };
 
-const saveRecipeToDb = async (recipe: ClaudeGeneratedRecipe): Promise<SavedRecipe> => {
+const saveRecipeToDb = async (
+  recipe: ClaudeGeneratedRecipe,
+  expiringKeys: Set<string>,
+): Promise<SavedRecipe> => {
   const { data: recipeRow, error: recipeError } = await getSupabase()
     .from("recipes")
     .insert({
@@ -66,6 +71,10 @@ const saveRecipeToDb = async (recipe: ClaudeGeneratedRecipe): Promise<SavedRecip
     cooking_time_minutes: recipe.cooking_time_minutes,
     instructions: recipe.instructions,
     reason: recipe.reason,
+    ingredient_names: recipe.ingredients.map((ing) => ing.display_name),
+    has_expiring_ingredients: recipe.ingredients.some((ing) =>
+      expiringKeys.has(ing.recipe_match_key),
+    ),
   };
 };
 
@@ -98,5 +107,8 @@ export const generateAndSaveRecipes = async (
   }
 
   const recipes = parseClaudeResponse(textBlock.text);
-  return Promise.all(recipes.map(saveRecipeToDb));
+  const expiringKeys = new Set(
+    ingredients.filter((i) => i.is_expiring).map((i) => i.recipe_match_key),
+  );
+  return Promise.all(recipes.map((recipe) => saveRecipeToDb(recipe, expiringKeys)));
 };

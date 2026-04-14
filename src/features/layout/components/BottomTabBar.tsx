@@ -28,17 +28,13 @@ export function BottomTabBar() {
         {tabItems.map(({ href, label, icon: Icon }) => {
           // "/" は完全一致、それ以外は前方一致でアクティブ判定
           const isActive =
-            href === "/"
-              ? pathname === "/"
-              : pathname === href || pathname.startsWith(href + "/");
+            href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
               className={`flex flex-1 flex-col items-center justify-center gap-1 rounded-[26px] transition-colors ${
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground"
+                isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground"
               }`}
             >
               <Icon size={18} />
