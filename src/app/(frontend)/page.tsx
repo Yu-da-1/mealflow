@@ -1,7 +1,6 @@
 // DBを参照するためビルド時の静的プリレンダリングを無効化する
 export const dynamic = "force-dynamic";
 
-
 import type { FoodMasterRow } from "@/lib/types/database";
 import type {
   InventorySummaryItem,
