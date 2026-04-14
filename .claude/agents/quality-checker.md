@@ -9,21 +9,55 @@ tools: Bash, Read, Edit, MultiEdit
 
 ## 手順
 
-### Step 1: 自動修正
+### Step 1: 自動修正（1パス）
+
+prettier と eslint の自動修正を1コマンドで行う。
 
 ```bash
-pnpm prettier --write .
-pnpm eslint . --fix
+pnpm prettier --write . && pnpm eslint . --fix --max-warnings 0
 ```
 
-### Step 2: チェックと修正のループ
+eslint の `--fix` と `--max-warnings 0` は1回のパスで済ませる。
 
-以下を実行し、エラーが出たら修正して再実行する。
+### Step 2: .next キャッシュの条件付き削除
+
+`src/app/` 配下でファイルの**削除・移動・リネーム**があった場合のみ `.next` を削除する。
+追加・編集だけなら削除不要（tsc のキャッシュが活きる）。
+
+```bash
+git diff --name-status HEAD | grep -E '^[DR]' | grep 'src/app/'
+```
+
+上記コマンドの出力が**1行以上ある場合**は `.next` の削除が必要。
+ただし `rm -rf` は deny されているため、削除が必要なケースでは以下を出力してユーザーに通知すること。
+
+```
+⚠️ src/app/ 配下でファイルの削除・移動があります。
+tsc を実行する前に手動で `rm -rf .next` を実行してください。
+```
+
+通知後、ユーザーの確認を待たずに Step 3 へ進む（tsc はキャッシュが残っていても実行できる）。
+
+### Step 3: チェックと修正のループ（並列実行）
+
+tsc と eslint を並列で実行する。どちらかが失敗したら修正して再実行する。
 **全部グリーンになるまで繰り返す。**
 
 ```bash
-pnpm tsc --noEmit
-pnpm eslint . --max-warnings 0
+pnpm tsc --noEmit & TSC_PID=$!; pnpm eslint . --max-warnings 0 & ESLINT_PID=$!; wait $TSC_PID; TSC_EXIT=$?; wait $ESLINT_PID; ESLINT_EXIT=$?; [ $TSC_EXIT -eq 0 ] && [ $ESLINT_EXIT -eq 0 ]
+```
+
+### Step 4: vitest（差分テスト → 必要なら全テスト）
+
+変更に関係するテストのみ実行する。対象が0件のときは全テストを実行して見逃しを防ぐ。
+
+```bash
+pnpm vitest run --changed
+```
+
+上記コマンドが「No test files found」または exit code 1 でテストが0件だった場合は、続けて全テストを実行する。
+
+```bash
 pnpm vitest run
 ```
 
@@ -46,10 +80,10 @@ pnpm vitest run
 - 判断できないこと:
 ```
 
-### Step 3: 最終確認
+### Step 5: 最終確認
 
 ```bash
-pnpm tsc --noEmit && pnpm eslint . --max-warnings 0 && pnpm vitest run
+(pnpm tsc --noEmit & TSC_PID=$!; pnpm eslint . --max-warnings 0 & ESLINT_PID=$!; wait $TSC_PID; TSC_EXIT=$?; wait $ESLINT_PID; ESLINT_EXIT=$?; [ $TSC_EXIT -eq 0 ] && [ $ESLINT_EXIT -eq 0 ]) && pnpm vitest run --changed
 ```
 
 ## 完了報告
