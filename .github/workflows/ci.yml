@@ -27,6 +27,7 @@ jobs:
       - name: Type check
         run: |
           rm -rf .next
+          printf '/// <reference types="next" />\n/// <reference types="next/image-types/global" />\n' > next-env.d.ts
           pnpm tsc --noEmit
 
       - name: Lint
