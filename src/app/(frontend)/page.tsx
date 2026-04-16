@@ -70,6 +70,10 @@ function buildRecommendedRecipes(
       cooking_time_minutes: recipe.cooking_time_minutes,
       instructions: recipe.instructions,
       reason: buildRecommendReason(recipe, expiringKeys, keyToDisplayName),
+      ingredient_names: recipe.ingredients
+        .map((i) => keyToDisplayName.get(i.recipe_match_key))
+        .filter((name): name is string => name !== undefined),
+      has_expiring_ingredients: recipe.ingredients.some((i) => expiringKeys.has(i.recipe_match_key)),
     }));
 }
 

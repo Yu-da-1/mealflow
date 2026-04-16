@@ -53,6 +53,8 @@ const getCachedRecommendedRecipes = unstable_cache(
       cooking_time_minutes: r.cooking_time_minutes,
       instructions: r.instructions,
       reason: r.reason,
+      ingredient_names: r.ingredient_names,
+      has_expiring_ingredients: r.has_expiring_ingredients,
     }));
   },
   ["recommended-recipes"],
@@ -60,13 +62,6 @@ const getCachedRecommendedRecipes = unstable_cache(
 );
 
 export default async function RecipesPage() {
-  const header = (
-    <div className="mb-6">
-      <h1 className="text-xl font-bold text-foreground">おすすめレシピ</h1>
-      <p className="mt-1 text-sm text-muted-foreground">在庫をもとに提案したレシピです</p>
-    </div>
-  );
-
   let recommended: RecommendedRecipeResponse[] | null = null;
 
   try {
@@ -75,9 +70,18 @@ export default async function RecipesPage() {
     console.error("Failed to generate recipes:", e);
   }
 
+  const count = recommended?.length ?? 0;
+
+  const header = (
+    <div className="mb-6">
+      <h1 className="text-xl font-bold text-foreground">おすすめレシピ</h1>
+      {count > 0 && <p className="mt-1 text-sm text-muted-foreground">在庫から{count}件提案</p>}
+    </div>
+  );
+
   if (recommended !== null && recommended.length === 0) {
     return (
-      <div className="p-6 max-w-2xl">
+      <div className="p-4 max-w-2xl">
         {header}
         <p className="text-muted-foreground text-sm">食品を追加するとレシピ提案が表示されます</p>
       </div>
@@ -85,7 +89,7 @@ export default async function RecipesPage() {
   }
 
   return (
-    <div className="p-6 max-w-2xl">
+    <div className="p-4 max-w-2xl">
       {header}
       {recommended !== null ? <RecipeList recipes={recommended} /> : <RecipeError />}
     </div>

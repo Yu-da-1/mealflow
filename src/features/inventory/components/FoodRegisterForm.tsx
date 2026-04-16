@@ -28,7 +28,9 @@ export function FoodRegisterForm() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<FoodMasterRow[]>([]);
   // バーコードスキャン（BarcodeMasterHit）と手動検索（FoodMasterRow）の両方を受け入れる
-  const [selectedMaster, setSelectedMaster] = useState<BarcodeMasterHit | FoodMasterRow | null>(null);
+  const [selectedMaster, setSelectedMaster] = useState<BarcodeMasterHit | FoodMasterRow | null>(
+    null,
+  );
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const [quantity, setQuantity] = useState("1");

@@ -36,3 +36,19 @@
 - [ ] `RecipeList` を更新して1件目をヒーローカード、2件目以降をサブカードで表示
 - [ ] モバイルで表示を手動確認
 
+### plan
+
+- 影響ファイル:
+  - `src/lib/types/ui.ts`（`RecommendedRecipeResponse` に `ingredient_names` / `has_expiring_ingredients` を追加）
+  - `src/server/repositories/claudeRecipeRepository.ts`（`SavedRecipe` にフィールド追加し、AI レスポンスから食材名・期限フラグを取得して返す）
+  - `src/app/(frontend)/recipes/page.tsx`（新フィールドをレスポンスに含める）
+  - `src/features/recipes/components/RecipeHeroCard.tsx`（新規作成）
+  - `src/features/recipes/components/RecipeList.tsx`（1件目ヒーローカード・2件目以降サブカードへ更新）
+- 実装順:
+  1. 型定義追加（`ui.ts`）
+  2. `claudeRecipeRepository.ts` に食材名・期限フラグを追加
+  3. `page.tsx` で新フィールドをマッピング
+  4. `RecipeHeroCard` コンポーネント作成
+  5. `RecipeList` を更新
+- 懸念点:
+  - 食材名は AI レスポンスの `display_name` から取得。期限フラグは `ingredients` の `is_expiring` を `recipe_match_key` でクロスチェックして算出

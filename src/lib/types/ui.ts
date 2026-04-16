@@ -34,4 +34,6 @@ export type RecommendedRecipeResponse = {
   cooking_time_minutes: number | null;
   instructions: string | null;
   reason: string;
+  ingredient_names: string[];
+  has_expiring_ingredients: boolean;
 };
